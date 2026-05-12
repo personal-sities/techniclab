@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TECHNICLAB — IT Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f6f8fb;
+  --surface2: #eef1f7;
+  --accent: #1a6cff;
+  --accent2: #7c3aed;
+  --accent3: #10b981;
+  --text: #111827;
+  --text-muted: #6b7a99;
+  --border-gray: #e5e9f2;
+  --shadow: 0 4px 24px rgba(26,108,255,0.07);
+  --shadow-lg: 0 12px 48px rgba(26,108,255,0.13);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text); overflow-x: hidden; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #fff; }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 5%; height: 70px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,255,255,0.93);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-gray);
+  box-shadow: 0 1px 16px rgba(0,0,0,0.05);
+}
+.logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.45rem; letter-spacing:-0.02em; color:var(--text); text-decoration:none; }
+.logo span { color:var(--accent); }
+.nav-links { display:flex; gap:2rem; list-style:none; align-items:center; }
+.nav-links a { text-decoration:none; color:var(--text-muted); font-size:0.9rem; font-weight:500; transition:color 0.2s; position:relative; }
+.nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--accent); border-radius:2px; transition:width 0.3s; }
+.nav-links a:hover { color:var(--accent); }
+.nav-links a:hover::after { width:100%; }
+.nav-cta { padding:0.5rem 1.3rem; background:var(--accent); border-radius:8px; color:#fff!important; font-weight:600; transition:box-shadow 0.2s,transform 0.2s!important; }
+.nav-cta::after { display:none!important; }
+.nav-cta:hover { box-shadow:0 4px 16px rgba(26,108,255,0.3); transform:translateY(-1px); }
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:5px; }
+.hamburger span { width:22px; height:2px; background:var(--text); border-radius:2px; }
+
+/* HERO BANNER */
+#hero-banner { margin-top:70px; width:100%; max-height:500px; overflow:hidden; position:relative; }
+#hero-banner img { width:100%; height:100%; object-fit:cover; display:block; max-height:500px; }
+.banner-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to right, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.5) 45%, rgba(255,255,255,0.05) 100%);
+  display:flex; align-items:center; padding:0 6%;
+}
+.banner-text-box { max-width:520px; }
+.banner-badge {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  padding:0.35rem 0.9rem; background:rgba(26,108,255,0.1);
+  border-radius:100px; margin-bottom:1.2rem;
+  font-size:0.72rem; font-weight:700; color:var(--accent);
+  letter-spacing:0.1em; text-transform:uppercase;
+  border:1px solid rgba(26,108,255,0.2);
+}
+.banner-badge .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:pulse 2s infinite; }
+.banner-text-box h1 {
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2rem,4vw,3.4rem);
+  font-weight:800; color:#111827;
+  line-height:1.1; letter-spacing:-0.025em; margin-bottom:1rem;
+}
+.banner-text-box h1 span { color:var(--accent); }
+.banner-text-box p { font-size:1rem; color:#374151; line-height:1.65; margin-bottom:1.6rem; }
+.banner-btns { display:flex; gap:0.8rem; flex-wrap:wrap; }
+
+/* STATS BAR */
+.stats-bar {
+  background:var(--accent); padding:1.4rem 5%;
+  display:flex; justify-content:center; gap:5rem; flex-wrap:wrap;
+}
+.stat-item { text-align:center; }
+.stat-item h3 { font-family:'Syne',sans-serif; font-size:1.9rem; font-weight:800; color:#fff; }
+.stat-item p { font-size:0.73rem; color:rgba(255,255,255,0.75); letter-spacing:0.06em; text-transform:uppercase; margin-top:0.1rem; }
+
+/* BUTTONS */
+.btn-primary { padding:0.75rem 1.8rem; background:var(--accent); color:#fff; border:none; border-radius:8px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:0.95rem; cursor:pointer; text-decoration:none; display:inline-block; transition:transform 0.2s,box-shadow 0.2s; }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(26,108,255,0.3); }
+.btn-secondary { padding:0.75rem 1.8rem; background:#fff; color:var(--text); border:1.5px solid var(--border-gray); border-radius:8px; font-family:'DM Sans',sans-serif; font-weight:500; font-size:0.95rem; cursor:pointer; text-decoration:none; display:inline-block; transition:border-color 0.2s,color 0.2s; }
+.btn-secondary:hover { border-color:var(--accent); color:var(--accent); }
+
+/* SECTIONS */
+section { padding:90px 5%; }
+.section-label {
+  display:inline-flex; align-items:center; gap:0.4rem;
+  font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:0.8rem; font-weight:700;
+  background:rgba(26,108,255,0.07); padding:0.3rem 0.85rem;
+  border-radius:100px; border:1px solid rgba(26,108,255,0.15);
+}
+.section-title { font-family:'Syne',sans-serif; font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:800; letter-spacing:-0.02em; margin-bottom:0.8rem; line-height:1.15; color:var(--text); }
+.section-subtitle { color:var(--text-muted); font-size:1rem; line-height:1.7; max-width:520px; margin-bottom:2.5rem; }
+
+/* ABOUT */
+#about { background:var(--surface); }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+.about-features { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:2rem; }
+.feature-card { padding:1.4rem; background:#fff; border:1px solid var(--border-gray); border-radius:14px; transition:box-shadow 0.3s,transform 0.3s; }
+.feature-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-3px); }
+.feature-card .icon { width:40px; height:40px; border-radius:10px; background:rgba(26,108,255,0.08); display:flex; align-items:center; justify-content:center; margin-bottom:0.75rem; color:var(--accent); }
+.feature-card h4 { font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:700; margin-bottom:0.35rem; color:var(--text); }
+.feature-card p { font-size:0.8rem; color:var(--text-muted); line-height:1.5; }
+.about-card-main { background:#fff; border:1px solid var(--border-gray); border-radius:20px; padding:2.5rem; position:relative; overflow:hidden; box-shadow:var(--shadow); }
+.about-card-main::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3)); }
+.about-card-main h3 { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:0.8rem; color:var(--text); }
+.about-card-main p { font-size:0.88rem; color:var(--text-muted); line-height:1.7; }
+.cert-mini-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin-top:1.5rem; }
+.cert-mini { padding:0.8rem; border:1px solid var(--border-gray); border-radius:10px; text-align:center; font-size:0.7rem; color:var(--text-muted); background:var(--surface); }
+.cert-mini strong { display:block; font-size:0.82rem; margin-bottom:0.15rem; }
+
+/* SERVICES */
+.services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; }
+.service-card { padding:2rem; background:#fff; border:1px solid var(--border-gray); border-radius:16px; transition:box-shadow 0.3s,transform 0.3s; position:relative; overflow:hidden; }
+.service-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--accent); transform:scaleX(0); transform-origin:left; transition:transform 0.3s; }
+.service-card:hover::after { transform:scaleX(1); }
+.service-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-4px); }
+.service-icon { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:1.2rem; background:rgba(26,108,255,0.07); color:var(--accent); }
+.service-card h3 { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; margin-bottom:0.5rem; color:var(--text); }
+.service-card p { font-size:0.85rem; color:var(--text-muted); line-height:1.6; }
+.service-tag { display:inline-block; margin-top:1rem; padding:0.25rem 0.65rem; border-radius:6px; font-size:0.7rem; letter-spacing:0.06em; text-transform:uppercase; font-weight:600; }
+.tag-ai { background:rgba(26,108,255,0.08); color:var(--accent); }
+.tag-crm { background:rgba(124,58,237,0.08); color:var(--accent2); }
+.tag-web { background:rgba(16,185,129,0.08); color:var(--accent3); }
+
+/* CERTS */
+#certificates { background:var(--surface); }
+.certs-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem; }
+.cert-card { background:#fff; border:1px solid var(--border-gray); border-radius:16px; overflow:hidden; transition:box-shadow 0.3s,transform 0.3s; }
+.cert-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-4px); }
+.cert-accent-bar { height:4px; }
+.cert-bitrix .cert-accent-bar { background:linear-gradient(90deg,#0072ff,#00c6ff); }
+.cert-amocrm .cert-accent-bar { background:linear-gradient(90deg,#7c3aed,#a78bfa); }
+.cert-itpark .cert-accent-bar { background:linear-gradient(90deg,#10b981,#34d399); }
+.cert-onlinepbx .cert-accent-bar { background:linear-gradient(90deg,#f59e0b,#fcd34d); }
+.cert-header { padding:1.4rem 1.4rem 1rem; border-bottom:1px solid var(--border-gray); display:flex; align-items:center; gap:0.8rem; }
+.cert-header-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.cert-bitrix .cert-header-icon { background:rgba(0,114,255,0.1); color:#0072ff; }
+.cert-amocrm .cert-header-icon { background:rgba(124,58,237,0.1); color:#7c3aed; }
+.cert-itpark .cert-header-icon { background:rgba(16,185,129,0.1); color:#10b981; }
+.cert-onlinepbx .cert-header-icon { background:rgba(245,158,11,0.1); color:#f59e0b; }
+.cert-logo-text { font-family:'Syne',sans-serif; font-size:1rem; font-weight:800; }
+.cert-bitrix .cert-logo-text { color:#0072ff; }
+.cert-amocrm .cert-logo-text { color:#7c3aed; }
+.cert-itpark .cert-logo-text { color:#10b981; }
+.cert-onlinepbx .cert-logo-text { color:#f59e0b; }
+.cert-type { font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-top:0.15rem; }
+.cert-body { padding:1.2rem 1.4rem; }
+.cert-body p { font-size:0.82rem; color:var(--text-muted); line-height:1.5; margin-bottom:0.75rem; }
+.cert-date { font-size:0.75rem; color:var(--accent3); font-weight:600; }
+
+/* CLIENTS */
+#clients { background:#fff; }
+.clients-intro { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2.5rem; }
+.clients-carousel {
+  position:relative;
+  overflow:hidden;
+  padding:1rem 0;
+  mask-image:linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+.clients-carousel::before,
+.clients-carousel::after {
+  content:'';
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:72px;
+  z-index:2;
+  pointer-events:none;
+}
+.clients-carousel::before { left:0; background:linear-gradient(90deg, var(--surface), rgba(246,248,251,0)); }
+.clients-carousel::after { right:0; background:linear-gradient(270deg, var(--surface), rgba(246,248,251,0)); }
+.clients-track {
+  display:flex;
+  width:max-content;
+  gap:1rem;
+  animation:scrollPartners 34s linear infinite;
+}
+.clients-carousel:hover .clients-track { animation-play-state:paused; }
+.client-card {
+  width:200px;
+  min-height:152px;
+  background:#fff;
+  border:1.5px solid var(--border-gray);
+  border-radius:18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:1rem;
+  text-align:center;
+  flex-shrink:0;
+  transition:box-shadow 0.25s,transform 0.25s,border-color 0.25s;
+}
+.client-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-3px); border-color:rgba(26,108,255,0.25); }
+.client-logo-slot {
+  width:100%;
+  height:72px;
+  border-radius:14px;
+  border:1px dashed rgba(26,108,255,0.22);
+  background:
+    linear-gradient(135deg, rgba(26,108,255,0.07), rgba(124,58,237,0.08)),
+    #fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0.75rem;
+  margin-bottom:0.85rem;
+}
+.client-logo-placeholder {
+  font-family:'Syne',sans-serif;
+  font-size:0.9rem;
+  font-weight:700;
+  letter-spacing:0.04em;
+  color:var(--accent);
+  text-transform:uppercase;
+}
+.client-logo-slot img {
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  display:block;
+}
+.client-name { font-size:0.78rem; color:var(--text-muted); line-height:1.35; font-weight:600; }
+
+/* CONTACT */
+#contact { background:var(--surface); }
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
+.contact-methods { display:flex; flex-direction:column; gap:0.8rem; margin-top:2rem; }
+.contact-method { display:flex; align-items:center; gap:1rem; padding:1rem 1.3rem; background:#fff; border:1px solid var(--border-gray); border-radius:12px; text-decoration:none; color:var(--text); transition:box-shadow 0.2s,border-color 0.2s; }
+.contact-method:hover { border-color:var(--accent); box-shadow:0 4px 16px rgba(26,108,255,0.08); }
+.method-icon { width:40px; height:40px; border-radius:10px; background:rgba(26,108,255,0.08); display:flex; align-items:center; justify-content:center; color:var(--accent); flex-shrink:0; }
+.method-info small { display:block; font-size:0.7rem; color:var(--text-muted); margin-bottom:0.15rem; }
+.method-info span { font-size:0.9rem; font-weight:500; color:var(--text); }
+.contact-form-card { background:#fff; border:1px solid var(--border-gray); border-radius:20px; padding:2.5rem; position:relative; overflow:hidden; box-shadow:var(--shadow); }
+.contact-form-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--accent),var(--accent2)); }
+.contact-form-card h3 { font-family:'Syne',sans-serif; font-size:1.2rem; font-weight:700; margin-bottom:1.5rem; color:var(--text); }
+.form-group { margin-bottom:1rem; }
+.form-group label { display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:0.4rem; font-weight:500; }
+.form-group input, .form-group textarea, .form-group select { width:100%; padding:0.8rem 1rem; background:var(--surface); border:1px solid var(--border-gray); border-radius:10px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s,box-shadow 0.2s; }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(26,108,255,0.08); }
+.form-group textarea { min-height:100px; resize:vertical; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+#send-status { display:none; padding:0.8rem 1rem; border-radius:10px; font-size:0.88rem; font-weight:500; text-align:center; margin-top:0.8rem; }
+#send-status.success { background:rgba(16,185,129,0.1); color:#065f46; border:1px solid rgba(16,185,129,0.25); }
+#send-status.error { background:rgba(239,68,68,0.1); color:#991b1b; border:1px solid rgba(239,68,68,0.2); }
+
+/* FOOTER */
+footer { padding:1.8rem 5%; border-top:1px solid var(--border-gray); display:flex; justify-content:space-between; align-items:center; background:#fff; }
+footer .logo { font-size:1.1rem; }
+footer p { font-size:0.8rem; color:var(--text-muted); }
+.footer-links { display:flex; gap:1.5rem; }
+.footer-links a { font-size:0.8rem; color:var(--text-muted); text-decoration:none; transition:color 0.2s; }
+.footer-links a:hover { color:var(--accent); }
+
+/* REVEAL */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease,transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+@keyframes scrollPartners { from { transform:translateX(0); } to { transform:translateX(calc(-50% - 0.5rem)); } }
+
+@media(max-width:900px){
+  .nav-links{display:none} .hamburger{display:flex}
+  .about-grid,.contact-grid{grid-template-columns:1fr;gap:2rem}
+  .services-grid{grid-template-columns:1fr 1fr}
+  .certs-grid{grid-template-columns:1fr 1fr}
+  .clients-intro{flex-direction:column;align-items:flex-start;gap:1rem}
+  .client-card{width:180px;min-height:144px}
+  .form-row{grid-template-columns:1fr}
+  .stats-bar{gap:2rem}
+  #hero-banner{max-height:320px}
+}
+@media(max-width:600px){
+  .services-grid{grid-template-columns:1fr}
+  .certs-grid{grid-template-columns:1fr}
+  .about-features{grid-template-columns:1fr}
+  .clients-carousel{mask-image:none}
+  .clients-carousel::before,.clients-carousel::after{display:none}
+  .clients-track{animation-duration:26s}
+  .client-card{width:156px;min-height:136px;padding:0.85rem}
+  .client-logo-slot{height:64px}
+  footer{flex-direction:column;gap:1rem;text-align:center}
+  .footer-links{flex-wrap:wrap;justify-content:center}
+  #hero-banner{max-height:240px}
+  .banner-text-box p{display:none}
+  .banner-text-box h1{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero-banner" class="logo">TECHNIC<span>LAB</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">Kompaniya haqida</a></li>
+    <li><a href="#certificates">Sertifikatlar</a></li>
+    <li><a href="#services">Xizmatlar</a></li>
+    <li><a href="#clients">Mijozlar</a></li>
+    <li><a href="#contact" class="nav-cta">Aloqa</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO BANNER IMAGE -->
+<div id="hero-banner">
+  <img src="images/photo2.jpg" alt="AI Website Development">
+  <div class="banner-overlay">
+    <div class="banner-text-box">
+      <div class="banner-badge"><span class="dot"></span>IT Park Rezidenti · Toshkent 2026</div>
+      <h1>Biznesingizni <span>raqamlashtiring</span></h1>
+      <p>Zamonaviy CRM, AI yechimlar va veb-saytlar orqali biznesingizni yangi bosqichga olib chiqamiz.</p>
+      <div class="banner-btns">
+        <a href="#services" class="btn-primary">Xizmatlar →</a>
+        <a href="#contact" class="btn-secondary">Bog'lanish</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item"><h3>21+</h3><p>Mijozlar</p></div>
+  <div class="stat-item"><h3>4+</h3><p>Sertifikatlar</p></div>
+  <div class="stat-item"><h3>5+</h3><p>Yillik tajriba</p></div>
+  <div class="stat-item"><h3>100%</h3><p>Natijaga yo'nalish</p></div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div>
+      <span class="section-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        Kompaniya haqida
+      </span>
+      <h2 class="section-title">Ishonchli IT hamkoringiz</h2>
+      <p class="section-subtitle">Technic Lab — O'zbekistondagi yetakchi IT kompaniyalaridan biri. CRM, AI, veb va IP telephoniya bo'yicha sertifikatlangan mutaxassislar jamoasi.</p>
+      <div class="about-features">
+        <div class="feature-card">
+          <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg></div>
+          <h4>AI Yechimlar</h4>
+          <p>Sun'iy intellekt asosida jarayonlarni avtomatlashtirish</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div>
+          <h4>CRM Tizimlar</h4>
+          <p>amoCRM va Bitrix24 joriy etish va sozlash</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <h4>Veb Ishlanmalar</h4>
+          <p>Zamonaviy saytlar va veb-ilovalar yaratish</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.64 12a19.79 19.79 0 0 1-3.07-8.63 2 2 0 0 1 1.98-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.82-1.82a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <h4>IP Telephoniya</h4>
+          <p>onlinePBX yordamida aloqa tizimlarini qurish</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="about-card-main">
+        <h3>Sertifikatlangan mutaxassislar jamoasi</h3>
+        <p>Technic Lab jamoasi xalqaro va mahalliy sertifikatlar bilan tasdiqlangan. Biz har bir loyihaga individual yondashamiz va natijaga yo'naltirilgan echimlar taklif qilamiz.</p>
+        <div class="cert-mini-grid">
+          <div class="cert-mini"><strong style="color:#0072ff">Bitrix24</strong>Biznes hamkor</div>
+          <div class="cert-mini"><strong style="color:#7c3aed">amoCRM</strong>amoSTART hamkor</div>
+          <div class="cert-mini"><strong style="color:#10b981">IT Park</strong>Rezident #5806</div>
+          <div class="cert-mini"><strong style="color:#f59e0b">onlinePBX</strong>Sertifikatlangan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATES -->
+<section id="certificates">
+  <div style="text-align:center;margin-bottom:2.5rem">
+    <span class="section-label">
+      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+      Sertifikatlar
+    </span>
+    <h2 class="section-title">Rasmiy hamkorliklar</h2>
+    <p class="section-subtitle" style="margin:0 auto">Xalqaro va mahalliy sertifikatlar kompaniyamiz malakasini tasdiqlaydi.</p>
+  </div>
+  <div class="certs-grid">
+    <div class="cert-card cert-bitrix reveal">
+      <div class="cert-accent-bar"></div>
+      <div class="cert-header">
+        <div class="cert-header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg></div>
+        <div><div class="cert-logo-text">Битрикс24</div><div class="cert-type">Biznes hamkor</div></div>
+      </div>
+      <div class="cert-body">
+        <p>STUDENT CALL kompaniyasi 1С-Битрикс kompaniyasining rasmiy Biznes hamkori sifatida tasdiqlangan.</p>
+        <div class="cert-date">✓ 30 mart 2026 yildan</div>
+      </div>
+    </div>
+    <div class="cert-card cert-amocrm reveal">
+      <div class="cert-accent-bar"></div>
+      <div class="cert-header">
+        <div class="cert-header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div><div class="cert-logo-text">amoCRM</div><div class="cert-type">amoSTART rasmiy hamkori</div></div>
+      </div>
+      <div class="cert-body">
+        <p>Technic Lab amoCRM ning amoSTART dasturining rasmiy hamkori. ID: 28597310.</p>
+        <div class="cert-date">✓ 4 fevral 2025 yildan</div>
+      </div>
+    </div>
+    <div class="cert-card cert-itpark reveal">
+      <div class="cert-accent-bar"></div>
+      <div class="cert-header">
+        <div class="cert-header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div><div class="cert-logo-text">IT Park Uzbekistan</div><div class="cert-type">Texnopark rezidenti</div></div>
+      </div>
+      <div class="cert-body">
+        <p>"TECHNIC LAB" MCHJ Dasturiy mahsulotlar texnologik parkining rezidenti. Guvohnoma №5806.</p>
+        <div class="cert-date">✓ 15 aprel 2026 yil</div>
+      </div>
+    </div>
+    <div class="cert-card cert-onlinepbx reveal">
+      <div class="cert-accent-bar"></div>
+      <div class="cert-header">
+        <div class="cert-header-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.64 12a19.79 19.79 0 0 1-3.07-8.63 2 2 0 0 1 1.98-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.82-1.82a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div><div class="cert-logo-text">onlinePBX</div><div class="cert-type">Hamkor sertifikati</div></div>
+      </div>
+      <div class="cert-body">
+        <p>Technic Lab onlinePBX xizmatini joriy etish va qo'llab-quvvatlash bo'yicha sertifikatlangan hamkor.</p>
+        <div class="cert-date">✓ 27 aprel 2026 yildan</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div style="text-align:center;margin-bottom:2.5rem">
+    <span class="section-label">
+      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      Xizmatlar
+    </span>
+    <h2 class="section-title">Nima qila olamiz?</h2>
+    <p class="section-subtitle" style="margin:0 auto">Biznesingiz ehtiyojlariga moslashtirilgan keng qamrovli IT xizmatlari.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg></div>
+      <h3>AI Yechimlar</h3>
+      <p>Chatbot, avtomatlashtirish, ma'lumot tahlili — sun'iy intellekt texnologiyalari yordamida biznesingizni optimallashtiramiz.</p>
+      <span class="service-tag tag-ai">AI · ML</span>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div>
+      <h3>CRM Joriy Etish</h3>
+      <p>amoCRM va Bitrix24 tizimlarini to'liq sozlash, integratsiya va xodimlarni o'qitish.</p>
+      <span class="service-tag tag-crm">CRM · ERP</span>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+      <h3>Veb Saytlar</h3>
+      <p>Korporativ saytlar, landing pagelar va onlayn do'konlar. Zamonaviy dizayn va yuqori tezlik.</p>
+      <span class="service-tag tag-web">Web · Design</span>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.64 12a19.79 19.79 0 0 1-3.07-8.63 2 2 0 0 1 1.98-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.82-1.82a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+      <h3>IP Telephoniya</h3>
+      <p>onlinePBX asosida virtual ATS tizimini qurish, CRM bilan integratsiya va qo'ng'iroqlarni tahlil qilish.</p>
+      <span class="service-tag tag-crm">PBX · VoIP</span>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+      <h3>Biznes Avtomatlashtirish</h3>
+      <p>Biznes jarayonlarni raqamlashtirish, workflow yaratish va takrorlanuvchi ishlarni avtomatlashtirish.</p>
+      <span class="service-tag tag-ai">Automation</span>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+      <h3>Integratsiyalar</h3>
+      <p>Turli tizimlar o'rtasida API integratsiyalari, ma'lumotlar sinxronizatsiyasi va ulanishlar.</p>
+      <span class="service-tag tag-web">API · Integration</span>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section id="clients" style="background:var(--surface)">
+  <div class="clients-intro">
+    <div>
+      <span class="section-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Mijozlar
+      </span>
+      <h2 class="section-title">Bizga ishongan kompaniyalar</h2>
+    </div>
+    <p style="color:var(--text-muted);font-size:0.9rem;max-width:280px;text-align:right">O'zbekistoning yetakchi kompaniyalari biz bilan hamkorlik qilmoqda</p>
+  </div>
+  <div class="clients-carousel reveal">
+    <div class="clients-track">
+      <!-- Placeholder o'rniga quyidagini qo'ying: <img src="images/partner-logo.png" alt="Hamkor logosi"> -->
+      <div class="client-card">
+        <div class="client-logo-slot"><img src="images/darmon.webp" alt="Darmon Servis logosi"></div>
+        <div class="client-name">Darmon Servis</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><img src="images/images.png" alt="Ebirja logosi"></div>
+        <div class="client-name">Ebirja</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><img src="images/logo_1759903499.png" alt="ISFT Instituti logosi"></div>
+        <div class="client-name">ISFT Instituti</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Buyuk Karavan</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><img src="images/images (1).png" alt="Imarkaz logosi"></div>
+        <div class="client-name">Imarkaz</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Insan Academy</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Ko'z Nuri</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">UBS</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Prof Med Vision</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Fitcity</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Allmax</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">USAT</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Arzonmobile</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">BoboMotors</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Uymakon</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">IAU Agrar Uni</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">TAFU</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Actimed</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Unicum Foundation</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">AI Station</div>
+      </div>
+      <div class="client-card">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Trend Solutions</div>
+      </div>
+
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><img src="images/darmon-servis.png" alt="Darmon Servis logosi"></div>
+        <div class="client-name">Darmon Servis</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><img src="images/ebirja.png" alt="Ebirja logosi"></div>
+        <div class="client-name">Ebirja</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><img src="images/isft-instituti.png" alt="ISFT Instituti logosi"></div>
+        <div class="client-name">ISFT Instituti</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Buyuk Karavan</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><img src="images/imarkaz.png" alt="Imarkaz logosi"></div>
+        <div class="client-name">Imarkaz</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Insan Academy</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Ko'z Nuri</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">UBS</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Prof Med Vision</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Fitcity</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Allmax</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">USAT</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Arzonmobile</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">BoboMotors</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Uymakon</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">IAU Agrar Uni</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">TAFU</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Actimed</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Unicum Foundation</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">AI Station</div>
+      </div>
+      <div class="client-card" aria-hidden="true">
+        <div class="client-logo-slot"><div class="client-logo-placeholder">Logo</div></div>
+        <div class="client-name">Trend Solutions</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div>
+      <span class="section-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Aloqa
+      </span>
+      <h2 class="section-title">Birgalikda ishlaylik</h2>
+      <p class="section-subtitle">Loyihangiz haqida gaplashishga tayyormiz. Murojaat qiling — tez orada javob beramiz.</p>
+      <div class="contact-methods">
+        <a href="tel:+998000000000" class="contact-method">
+          <div class="method-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.64 12a19.79 19.79 0 0 1-3.07-8.63 2 2 0 0 1 1.98-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.82-1.82a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div class="method-info"><small>Telefon</small><span>+998 (00) 000-00-00</span></div>
+        </a>
+        <a href="mailto:diyorumirbekov80@gmail.com" class="contact-method">
+          <div class="method-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div class="method-info"><small>Email</small><span>diyorumirbekov80@gmail.com</span></div>
+        </a>
+        <a href="https://t.me/techniclab" class="contact-method">
+          <div class="method-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+          <div class="method-info"><small>Telegram</small><span>@techniclab</span></div>
+        </a>
+        <a href="#" class="contact-method">
+          <div class="method-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="method-info"><small>Manzil</small><span>Toshkent, O'zbekiston</span></div>
+        </a>
+      </div>
+    </div>
+    <div>
+      <div class="contact-form-card">
+        <h3>Murojaat jo'natish</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Ismingiz *</label><input type="text" id="f-name" placeholder="Ism Familiya"></div>
+          <div class="form-group"><label>Telefon *</label><input type="tel" id="f-phone" placeholder="+998 __ ___ __ __"></div>
+        </div>
+        <div class="form-group"><label>Kompaniya</label><input type="text" id="f-company" placeholder="Kompaniyangiz nomi"></div>
+        <div class="form-group">
+          <label>Xizmat turi</label>
+          <select id="f-service">
+            <option>CRM joriy etish</option>
+            <option>AI yechimlar</option>
+            <option>Veb sayt yaratish</option>
+            <option>IP Telephoniya</option>
+            <option>Biznes avtomatlashtirish</option>
+            <option>Integratsiyalar</option>
+            <option>Boshqa</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Xabar</label><textarea id="f-message" placeholder="Loyihangiz haqida qisqacha yozing..."></textarea></div>
+        <button class="btn-primary" style="width:100%;text-align:center;padding:0.9rem;display:flex;align-items:center;justify-content:center;gap:0.5rem" onclick="sendViaGmail()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Gmail orqali jo'natish
+        </button>
+        <div id="send-status"></div>
+        <p style="font-size:0.74rem;color:var(--text-muted);margin-top:0.8rem;text-align:center;line-height:1.5">
+          Tugmani bosganingizda Gmail ochilib, tayyor xat ko'rsatiladi. Yuborish tugmasini bosing.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#hero-banner" class="logo">TECHNIC<span>LAB</span></a>
+  <p>© 2026 Technic Lab MCHJ · IT Park rezidenti</p>
+  <div class="footer-links">
+    <a href="#about">Haqida</a>
+    <a href="#certificates">Sertifikatlar</a>
+    <a href="#services">Xizmatlar</a>
+    <a href="#clients">Mijozlar</a>
+  </div>
+</footer>
+
+<script>
+// Reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const idx = Array.from(entry.target.parentElement?.children || []).indexOf(entry.target);
+      setTimeout(() => entry.target.classList.add('visible'), idx * 55);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin:'0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Mobile menu
+function toggleMenu() {
+  const links = document.querySelector('.nav-links');
+  if (links.style.display === 'flex') {
+    links.style.display = '';
+  } else {
+    links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:70px;left:0;right:0;background:rgba(255,255,255,0.98);padding:2rem;gap:1.5rem;border-bottom:1px solid #e5e9f2;box-shadow:0 8px 32px rgba(0,0,0,0.08);z-index:99;backdrop-filter:blur(20px)';
+  }
+}
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => { document.querySelector('.nav-links').style.display = ''; });
+});
+
+// Active nav
+const navSections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  navSections.forEach(s => {
+    const top = s.offsetTop - 100;
+    const id = s.getAttribute('id');
+    const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+    if (link) link.style.color = (scrollY >= top && scrollY < top + s.offsetHeight) ? 'var(--accent)' : '';
+  });
+});
+
+// Gmail send
+function sendViaGmail() {
+  const name    = document.getElementById('f-name').value.trim();
+  const phone   = document.getElementById('f-phone').value.trim();
+  const company = document.getElementById('f-company').value.trim();
+  const service = document.getElementById('f-service').value;
+  const message = document.getElementById('f-message').value.trim();
+  const status  = document.getElementById('send-status');
+
+  if (!name || !phone) {
+    status.className = 'error'; status.style.display = 'block';
+    status.textContent = '⚠️ Iltimos, ism va telefon raqamingizni kiriting.';
+    return;
+  }
+
+  const to = 'diyorumirbekov80@gmail.com';
+  const subject = encodeURIComponent(`Techniclab.uz — Yangi murojaat: ${service}`);
+  const body = encodeURIComponent(
+`Yangi murojaat — Techniclab.uz saytidan
+${'─'.repeat(40)}
+
+Ism:       ${name}
+Telefon:   ${phone}
+Kompaniya: ${company || "Ko'rsatilmagan"}
+Xizmat:    ${service}
+
+Xabar:
+${message || "Xabar yozilmagan"}
+
+${'─'.repeat(40)}
+Yuborildi: ${new Date().toLocaleString('uz-UZ')}`
+  );
+
+  window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`, '_blank');
+
+  status.className = 'success'; status.style.display = 'block';
+  status.textContent = '✓ Gmail ochildi! Xatni yuborishni unutmang.';
+  setTimeout(() => { status.style.display = 'none'; }, 6000);
+}
+</script>
+</body>
+</html>
