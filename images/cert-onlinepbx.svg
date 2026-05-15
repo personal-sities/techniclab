@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#fb923c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" rx="28" fill="url(#bg)"/>
+  <rect x="56" y="56" width="1088" height="688" rx="24" fill="#ffffff" stroke="#fdba74" stroke-width="4"/>
+  <rect x="110" y="110" width="980" height="18" rx="9" fill="url(#accent)"/>
+  <text x="120" y="205" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#ea580c">onlinePBX</text>
+  <text x="120" y="285" font-family="Arial, sans-serif" font-size="68" font-weight="700" fill="#111827">Certified Integration Partner</text>
+  <text x="120" y="350" font-family="Arial, sans-serif" font-size="30" fill="#4b5563">Technic Lab is authorized to deploy and support onlinePBX solutions.</text>
+  <rect x="120" y="420" width="360" height="120" rx="20" fill="#fff7ed" stroke="#fdba74" stroke-width="3"/>
+  <text x="150" y="485" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#c2410c">Certified from</text>
+  <text x="150" y="530" font-family="Arial, sans-serif" font-size="36" font-weight="700" fill="#111827">27 April 2026</text>
+  <circle cx="925" cy="460" r="116" fill="#fff7ed" stroke="#fb923c" stroke-width="12"/>
+  <path d="M878 430 q48 -72 94 0" fill="none" stroke="#f97316" stroke-width="16" stroke-linecap="round"/>
+  <path d="M845 468 q80 104 160 0" fill="none" stroke="#ea580c" stroke-width="16" stroke-linecap="round"/>
+  <path d="M120 635 C330 595, 470 735, 700 655 S970 610, 1080 690" fill="none" stroke="#fdba74" stroke-width="8" opacity="0.7"/>
+  <text x="120" y="695" font-family="Arial, sans-serif" font-size="24" fill="#7c2d12">Voice, CRM and telephony integration partner</text>
+</svg>

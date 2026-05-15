@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5fbff"/>
+      <stop offset="100%" stop-color="#d9f0ff"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00a6ff"/>
+      <stop offset="100%" stop-color="#006bff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" rx="28" fill="url(#bg)"/>
+  <rect x="40" y="40" width="1120" height="720" rx="24" fill="#ffffff" stroke="#b7ddff" stroke-width="4"/>
+  <rect x="80" y="90" width="1040" height="18" rx="9" fill="url(#bar)"/>
+  <text x="120" y="190" font-family="Arial, sans-serif" font-size="44" font-weight="700" fill="#0078d7">Bitrix24</text>
+  <text x="120" y="250" font-family="Arial, sans-serif" font-size="70" font-weight="700" fill="#0f172a">Official Business Partner</text>
+  <text x="120" y="330" font-family="Arial, sans-serif" font-size="30" fill="#475569">Certificate of partnership awarded to Technic Lab</text>
+  <text x="120" y="388" font-family="Arial, sans-serif" font-size="28" fill="#64748b">CRM implementation, automation and integration expertise confirmed.</text>
+  <rect x="120" y="450" width="420" height="140" rx="18" fill="#e0f2ff"/>
+  <text x="155" y="515" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#0369a1">Partner Since</text>
+  <text x="155" y="565" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#0f172a">30 March 2026</text>
+  <rect x="780" y="470" width="240" height="140" rx="20" fill="#0078d7"/>
+  <text x="900" y="535" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#ffffff">CERTIFIED</text>
+  <text x="900" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#dbeafe">BITRIX24</text>
+  <path d="M120 670 C300 610, 450 740, 640 670 S930 620, 1080 690" fill="none" stroke="#7dd3fc" stroke-width="8" opacity="0.65"/>
+  <text x="120" y="700" font-family="Arial, sans-serif" font-size="24" fill="#64748b">Technic Lab</text>
+  <text x="920" y="700" font-family="Arial, sans-serif" font-size="24" fill="#64748b">bitrix24 partner</text>
+</svg>
