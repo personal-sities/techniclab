@@ -924,7 +924,7 @@ footer p { font-size:0.8rem; color:var(--text-muted); }
         <h3>Murojaat jo'natish</h3>
         <div class="form-row">
           <div class="form-group"><label>Ismingiz *</label><input type="text" id="f-name" name="name" placeholder="Ism Familiya"></div>
-          <div class="form-group"><label>Telefon *</label><input type="tel" id="f-phone" name="phone" placeholder="+998 __ ___ __ __"></div>
+          <div class="form-group"><label>Telefon *</label><input type="tel" id="f-phone" name="phone" placeholder="+998 __ ___ __ __" inputmode="numeric" autocomplete="tel" value="+998"></div>
         </div>
         <div class="form-group"><label>Kompaniya</label><input type="text" id="f-company" name="company" placeholder="Kompaniyangiz nomi"></div>
         <div class="form-group">
@@ -942,7 +942,7 @@ footer p { font-size:0.8rem; color:var(--text-muted); }
         <div class="form-group"><label>Xabar</label><textarea id="f-message" name="message" placeholder="Loyihangiz haqida qisqacha yozing..."></textarea></div>
         <button type="submit" class="btn-primary" style="width:100%;text-align:center;padding:0.9rem;display:flex;align-items:center;justify-content:center;gap:0.5rem">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          Gmail orqali jo'natish
+          Murojaatni yuborish
         </button>
         <div id="send-status"></div>
       </form>
@@ -1053,10 +1053,14 @@ const translations = {
     formLabels: ['Ismingiz *', 'Telefon *', 'Kompaniya', 'Xizmat turi', 'Xabar'],
     formPlaceholders: ['Ism Familiya', '+998 __ ___ __ __', 'Kompaniyangiz nomi', 'Loyihangiz haqida qisqacha yozing...'],
     formOptions: ['CRM joriy etish', 'AI yechimlar', 'Veb sayt yaratish', 'IP Telephoniya', 'Biznes avtomatlashtirish', 'Integratsiyalar', 'Boshqa'],
-    formButton: "Gmail orqali jo'natish",
+    formButton: "Murojaatni yuborish",
+    submitLoading: "Yuborilmoqda...",
     footerText: '© 2026 Technic Lab MCHJ · IT Park rezidenti',
     footerLinks: ['Haqida', 'Sertifikatlar', 'Xizmatlar', 'Mijozlar'],
     validationError: '⚠️ Iltimos, ism va telefon raqamingizni kiriting.',
+    phoneInvalid: "⚠️ Telefon raqami 9 ta raqamdan iborat bo'lishi kerak.",
+    successMessage: "Murojaatingiz qabul qilindi, tez orada menejerlarimiz siz bilan bog'lanadi!",
+    requestError: "Xatolik yuz berdi. Qayta urinib ko'ring.",
     gmailOpened: "✓ Gmail ochildi! Xatni yuborishni unutmang.",
     mailSubjectPrefix: 'Techniclab.uz — Yangi murojaat:',
     mailBodyTitle: 'Yangi murojaat — Techniclab.uz saytidan',
@@ -1126,10 +1130,14 @@ const translations = {
     formLabels: ['Ваше имя *', 'Телефон *', 'Компания', 'Тип услуги', 'Сообщение'],
     formPlaceholders: ['Имя Фамилия', '+998 __ ___ __ __', 'Название вашей компании', 'Кратко опишите ваш проект...'],
     formOptions: ['Внедрение CRM', 'AI-решения', 'Создание сайта', 'IP-телефония', 'Автоматизация бизнеса', 'Интеграции', 'Другое'],
-    formButton: 'Отправить через Gmail',
+    formButton: 'Отправить заявку',
+    submitLoading: 'Отправка...',
     footerText: '© 2026 Technic Lab MCHJ · резидент IT Park',
     footerLinks: ['О компании', 'Сертификаты', 'Услуги', 'Клиенты'],
     validationError: '⚠️ Пожалуйста, укажите имя и номер телефона.',
+    phoneInvalid: '⚠️ Номер телефона должен содержать ровно 9 цифр.',
+    successMessage: 'Ваша заявка принята, наши менеджеры скоро свяжутся с вами!',
+    requestError: 'Произошла ошибка. Попробуйте еще раз.',
     gmailOpened: '✓ Gmail открыт! Не забудьте отправить письмо.',
     mailSubjectPrefix: 'Techniclab.uz — Новая заявка:',
     mailBodyTitle: 'Новая заявка с сайта Techniclab.uz',
@@ -1199,10 +1207,14 @@ const translations = {
     formLabels: ['Your name *', 'Phone *', 'Company', 'Service type', 'Message'],
     formPlaceholders: ['Full name', '+998 __ ___ __ __', 'Your company name', 'Briefly describe your project...'],
     formOptions: ['CRM implementation', 'AI solutions', 'Website development', 'IP telephony', 'Business automation', 'Integrations', 'Other'],
-    formButton: 'Send via Gmail',
+    formButton: 'Send request',
+    submitLoading: 'Sending...',
     footerText: '© 2026 Technic Lab MCHJ · IT Park resident',
     footerLinks: ['About', 'Certificates', 'Services', 'Clients'],
     validationError: '⚠️ Please enter your name and phone number.',
+    phoneInvalid: '⚠️ Phone number must contain exactly 9 digits.',
+    successMessage: 'Your request has been received. Our managers will contact you soon!',
+    requestError: 'An error occurred. Please try again.',
     gmailOpened: '✓ Gmail opened! Do not forget to send the email.',
     mailSubjectPrefix: 'Techniclab.uz — New request:',
     mailBodyTitle: 'New request from Techniclab.uz',
@@ -1580,9 +1592,56 @@ ${t.mailSentAt}: ${new Date().toLocaleString(t.locale)}`
 const SUPABASE_URL = 'https://nwkefvkimhtepzenwnwj.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_qWos73KFmtm0UDdpLHfrEw_-U240WbT';
 const EDGE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/send-to-amocrm`;
+const PHONE_PREFIX = '+998';
 
 function normalizeFieldValue(value) {
   return typeof value === 'string' ? value.trim() : '';
+}
+
+function getPhoneDigits(value) {
+  const digitsOnly = String(value || '').replace(/\D/g, '');
+  return digitsOnly.replace(/^998/, '').slice(0, 9);
+}
+
+function formatPhoneValue(digits) {
+  return `${PHONE_PREFIX}${digits}`;
+}
+
+function syncPhoneInputValue(input) {
+  if (!input) return;
+  input.value = formatPhoneValue(getPhoneDigits(input.value));
+}
+
+function moveCaretToEnd(input) {
+  if (!input || typeof input.setSelectionRange !== 'function') return;
+  requestAnimationFrame(() => {
+    const end = input.value.length;
+    input.setSelectionRange(end, end);
+  });
+}
+
+function initPhoneInputs() {
+  document.querySelectorAll('input[type="tel"], input[name="phone"], input[name="telefon"], #f-phone').forEach((input) => {
+    if (input.dataset.phoneBound === 'true') return;
+
+    input.dataset.phoneBound = 'true';
+    syncPhoneInputValue(input);
+
+    input.addEventListener('focus', () => {
+      syncPhoneInputValue(input);
+      moveCaretToEnd(input);
+    });
+
+    input.addEventListener('click', () => {
+      syncPhoneInputValue(input);
+      moveCaretToEnd(input);
+    });
+
+    input.addEventListener('input', () => {
+      syncPhoneInputValue(input);
+      moveCaretToEnd(input);
+    });
+  });
 }
 
 function queryFirstField(form, selectors) {
@@ -1650,17 +1709,24 @@ async function submitToEdgeFunction(event) {
   event.preventDefault();
 
   const form = event.currentTarget;
+  const t = translations[currentLang] || translations.uz;
   const nameField = getMappedField(form, 'name');
   const phoneField = getMappedField(form, 'phone');
   const messageField = getMappedField(form, 'message');
   const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
 
   const name = normalizeFieldValue(nameField ? nameField.value : '');
-  const phone = normalizeFieldValue(phoneField ? phoneField.value : '');
+  const phoneDigits = getPhoneDigits(phoneField ? phoneField.value : '');
+  const phone = formatPhoneValue(phoneDigits);
   const message = normalizeFieldValue(messageField ? messageField.value : '');
 
-  if (!name || !phone) {
-    showFormStatus(form, 'error', 'Iltimos, ism va telefon raqamingizni kiriting.');
+  if (!name || !phoneDigits) {
+    showFormStatus(form, 'error', t.validationError);
+    return;
+  }
+
+  if (phoneDigits.length !== 9) {
+    showFormStatus(form, 'error', t.phoneInvalid);
     return;
   }
 
@@ -1669,7 +1735,7 @@ async function submitToEdgeFunction(event) {
       submitButton.dataset.originalHtml = submitButton.innerHTML;
     }
     submitButton.disabled = true;
-    submitButton.innerHTML = 'Yuborilmoqda...';
+    submitButton.innerHTML = t.submitLoading;
   }
 
   try {
@@ -1694,10 +1760,13 @@ async function submitToEdgeFunction(event) {
     }
 
     form.reset();
-    showFormStatus(form, 'success', 'Murojaatingiz yuborildi!');
+    form.querySelectorAll('input[type="tel"], input[name="phone"], input[name="telefon"], #f-phone').forEach((input) => {
+      syncPhoneInputValue(input);
+    });
+    showFormStatus(form, 'success', t.successMessage);
   } catch (error) {
     console.error('Contact form submission failed:', error);
-    showFormStatus(form, 'error', 'Xatolik yuz berdi. Qayta urinib ko\'ring.');
+    showFormStatus(form, 'error', t.requestError);
   } finally {
     if (submitButton) {
       submitButton.disabled = false;
@@ -1707,6 +1776,7 @@ async function submitToEdgeFunction(event) {
 }
 
 function initEdgeContactForms() {
+  initPhoneInputs();
   document.querySelectorAll('form').forEach((form) => {
     const nameField = getMappedField(form, 'name');
     const phoneField = getMappedField(form, 'phone');
