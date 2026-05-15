@@ -21,7 +21,22 @@
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text); overflow-x: hidden; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #fff;
+  color: var(--text);
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+img, svg {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+input, textarea, select, button {
+  user-select: text;
+  -webkit-user-select: text;
+}
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: #fff; }
 ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
@@ -46,6 +61,22 @@ nav {
 .nav-cta { padding:0.5rem 1.3rem; background:var(--accent); border-radius:8px; color:#fff!important; font-weight:600; transition:box-shadow 0.2s,transform 0.2s!important; }
 .nav-cta::after { display:none!important; }
 .nav-cta:hover { box-shadow:0 4px 16px rgba(26,108,255,0.3); transform:translateY(-1px); }
+.nav-actions { display:flex; align-items:center; gap:0.8rem; }
+.lang-switcher { display:flex; align-items:center; gap:0.35rem; padding:0.25rem; background:var(--surface); border:1px solid var(--border-gray); border-radius:999px; }
+.lang-btn {
+  border:none;
+  background:transparent;
+  color:var(--text-muted);
+  font-size:0.72rem;
+  font-weight:700;
+  letter-spacing:0.08em;
+  padding:0.45rem 0.7rem;
+  border-radius:999px;
+  cursor:pointer;
+  text-transform:uppercase;
+  transition:background 0.2s,color 0.2s;
+}
+.lang-btn.active { background:var(--accent); color:#fff; }
 .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:5px; }
 .hamburger span { width:22px; height:2px; background:var(--text); border-radius:2px; }
 
@@ -138,28 +169,146 @@ section { padding:90px 5%; }
 /* CERTS */
 #certificates { background:var(--surface); }
 .certs-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem; }
-.cert-card { background:#fff; border:1px solid var(--border-gray); border-radius:16px; overflow:hidden; transition:box-shadow 0.3s,transform 0.3s; }
-.cert-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-4px); }
-.cert-accent-bar { height:4px; }
-.cert-bitrix .cert-accent-bar { background:linear-gradient(90deg,#0072ff,#00c6ff); }
-.cert-amocrm .cert-accent-bar { background:linear-gradient(90deg,#7c3aed,#a78bfa); }
-.cert-itpark .cert-accent-bar { background:linear-gradient(90deg,#10b981,#34d399); }
-.cert-onlinepbx .cert-accent-bar { background:linear-gradient(90deg,#f59e0b,#fcd34d); }
-.cert-header { padding:1.4rem 1.4rem 1rem; border-bottom:1px solid var(--border-gray); display:flex; align-items:center; gap:0.8rem; }
-.cert-header-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.cert-bitrix .cert-header-icon { background:rgba(0,114,255,0.1); color:#0072ff; }
-.cert-amocrm .cert-header-icon { background:rgba(124,58,237,0.1); color:#7c3aed; }
-.cert-itpark .cert-header-icon { background:rgba(16,185,129,0.1); color:#10b981; }
-.cert-onlinepbx .cert-header-icon { background:rgba(245,158,11,0.1); color:#f59e0b; }
-.cert-logo-text { font-family:'Syne',sans-serif; font-size:1rem; font-weight:800; }
-.cert-bitrix .cert-logo-text { color:#0072ff; }
-.cert-amocrm .cert-logo-text { color:#7c3aed; }
-.cert-itpark .cert-logo-text { color:#10b981; }
-.cert-onlinepbx .cert-logo-text { color:#f59e0b; }
-.cert-type { font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-top:0.15rem; }
-.cert-body { padding:1.2rem 1.4rem; }
-.cert-body p { font-size:0.82rem; color:var(--text-muted); line-height:1.5; margin-bottom:0.75rem; }
-.cert-date { font-size:0.75rem; color:var(--accent3); font-weight:600; }
+.cert-thumb {
+  border:none;
+  background:#fff;
+  border-radius:18px;
+  overflow:hidden;
+  padding:0;
+  cursor:pointer;
+  text-align:left;
+  box-shadow:var(--shadow);
+  transition:transform 0.28s, box-shadow 0.28s;
+}
+.cert-thumb:hover { transform:translateY(-5px); box-shadow:var(--shadow-lg); }
+.cert-thumb img {
+  width:100%;
+  aspect-ratio:4 / 3;
+  object-fit:cover;
+  display:block;
+  background:#fff;
+}
+.cert-thumb-info {
+  padding:1rem 1rem 1.05rem;
+  background:#fff;
+  border-top:1px solid var(--border-gray);
+}
+.cert-thumb-info strong {
+  display:block;
+  font-family:'Syne',sans-serif;
+  font-size:0.95rem;
+  margin-bottom:0.25rem;
+  color:var(--text);
+}
+.cert-thumb-info span {
+  font-size:0.78rem;
+  color:var(--text-muted);
+}
+.cert-modal {
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,0.78);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.22s ease;
+  z-index:300;
+}
+.cert-modal.open {
+  opacity:1;
+  pointer-events:auto;
+}
+.cert-modal-dialog {
+  max-width:min(1100px, 92vw);
+  max-height:90vh;
+  transform:scale(0.96);
+  transition:transform 0.22s ease;
+}
+.cert-modal.open .cert-modal-dialog { transform:scale(1); }
+.cert-modal img {
+  width:100%;
+  max-height:90vh;
+  object-fit:contain;
+  display:block;
+  border-radius:20px;
+  box-shadow:0 24px 80px rgba(0,0,0,0.38);
+  background:#fff;
+}
+.cert-modal-hint {
+  margin-top:0.8rem;
+  text-align:center;
+  color:rgba(255,255,255,0.86);
+  font-size:0.85rem;
+}
+#certificates .certs-grid > .cert-card { display:none; }
+.certs-grid.visual-grid {
+  display:block;
+  margin-top:1.2rem;
+}
+.cert-slider {
+  position:relative;
+  max-width:1100px;
+  margin:0 auto;
+}
+.cert-slider-viewport {
+  overflow:hidden;
+  min-height:700px;
+  cursor:grab;
+  touch-action:pan-y;
+}
+.cert-slider-track {
+  position:relative;
+  min-height:700px;
+}
+.cert-slider .cert-thumb {
+  position:absolute;
+  top:0;
+  left:50%;
+  width:min(68%, 760px);
+  min-width:0;
+  max-width:none;
+  opacity:0;
+  pointer-events:none;
+  transform:translateX(-50%) scale(0.72);
+  filter:blur(5px) saturate(0.8);
+  transition:transform 0.55s ease, opacity 0.55s ease, filter 0.55s ease, box-shadow 0.55s ease;
+  box-shadow:0 24px 60px rgba(15,23,42,0.08);
+}
+.cert-slider .cert-thumb.is-active {
+  opacity:1;
+  z-index:4;
+  pointer-events:auto;
+  transform:translateX(-50%) scale(1);
+  filter:none;
+  box-shadow:0 28px 70px rgba(15,23,42,0.18);
+}
+.cert-slider .cert-thumb.is-prev {
+  opacity:0.34;
+  z-index:2;
+  pointer-events:auto;
+  transform:translateX(calc(-50% - 330px)) scale(0.82);
+  filter:blur(4px) saturate(0.7);
+}
+.cert-slider .cert-thumb.is-next {
+  opacity:0.42;
+  z-index:3;
+  pointer-events:auto;
+  transform:translateX(calc(-50% + 330px)) scale(0.84);
+  filter:blur(2px) saturate(0.8);
+}
+.cert-slider .cert-thumb.is-hidden-left {
+  opacity:0;
+  z-index:1;
+  transform:translateX(calc(-50% - 520px)) scale(0.7);
+}
+.cert-slider .cert-thumb.is-hidden-right {
+  opacity:0;
+  z-index:1;
+  transform:translateX(calc(-50% + 520px)) scale(0.7);
+}
 
 /* CLIENTS */
 #clients { background:#fff; }
@@ -274,9 +423,18 @@ footer p { font-size:0.8rem; color:var(--text-muted); }
 
 @media(max-width:900px){
   .nav-links{display:none} .hamburger{display:flex}
+  .nav-actions{gap:0.5rem}
+  .lang-switcher{margin-left:auto}
   .about-grid,.contact-grid{grid-template-columns:1fr;gap:2rem}
   .services-grid{grid-template-columns:1fr 1fr}
   .certs-grid{grid-template-columns:1fr 1fr}
+  .cert-slider{max-width:100%}
+  .cert-slider-viewport,.cert-slider-track{min-height:500px}
+  .cert-slider .cert-thumb{width:min(88%, 760px);top:16px}
+  .cert-slider .cert-thumb.is-prev{transform:translateX(calc(-50% - 180px)) scale(0.84)}
+  .cert-slider .cert-thumb.is-next{transform:translateX(calc(-50% + 180px)) scale(0.84)}
+  .cert-slider .cert-thumb.is-hidden-left{transform:translateX(calc(-50% - 320px)) scale(0.72)}
+  .cert-slider .cert-thumb.is-hidden-right{transform:translateX(calc(-50% + 320px)) scale(0.72)}
   .clients-intro{flex-direction:column;align-items:flex-start;gap:1rem}
   .client-card{width:180px;min-height:144px}
   .form-row{grid-template-columns:1fr}
@@ -286,6 +444,13 @@ footer p { font-size:0.8rem; color:var(--text-muted); }
 @media(max-width:600px){
   .services-grid{grid-template-columns:1fr}
   .certs-grid{grid-template-columns:1fr}
+  .lang-btn{padding:0.42rem 0.55rem;font-size:0.68rem}
+  .cert-slider-viewport,.cert-slider-track{min-height:340px}
+  .cert-slider .cert-thumb{width:100%;top:0}
+  .cert-slider .cert-thumb.is-prev,
+  .cert-slider .cert-thumb.is-next,
+  .cert-slider .cert-thumb.is-hidden-left,
+  .cert-slider .cert-thumb.is-hidden-right{opacity:0}
   .about-features{grid-template-columns:1fr}
   .clients-carousel{mask-image:none}
   .clients-carousel::before,.clients-carousel::after{display:none}
@@ -312,12 +477,19 @@ footer p { font-size:0.8rem; color:var(--text-muted); }
     <li><a href="#clients">Mijozlar</a></li>
     <li><a href="#contact" class="nav-cta">Aloqa</a></li>
   </ul>
+  <div class="nav-actions">
+    <div class="lang-switcher" aria-label="Language switcher">
+      <button class="lang-btn active" type="button" data-lang="uz">UZ</button>
+      <button class="lang-btn" type="button" data-lang="ru">RU</button>
+      <button class="lang-btn" type="button" data-lang="en">EN</button>
+    </div>
+  </div>
   <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
 </nav>
 
 <!-- HERO BANNER IMAGE -->
 <div id="hero-banner">
-  <img src="images/photo2.jpg" alt="AI Website Development">
+  <img src="images/photo3.webp" alt="AI Website Development">
   <div class="banner-overlay">
     <div class="banner-text-box">
       <div class="banner-badge"><span class="dot"></span>IT Park Rezidenti · Toshkent 2026</div>
@@ -333,7 +505,7 @@ footer p { font-size:0.8rem; color:var(--text-muted); }
 
 <!-- STATS -->
 <div class="stats-bar">
-  <div class="stat-item"><h3>21+</h3><p>Mijozlar</p></div>
+  <div class="stat-item"><h3>50+</h3><p>Mijozlar</p></div>
   <div class="stat-item"><h3>4+</h3><p>Sertifikatlar</p></div>
   <div class="stat-item"><h3>5+</h3><p>Yillik tajriba</p></div>
   <div class="stat-item"><h3>100%</h3><p>Natijaga yo'nalish</p></div>
@@ -395,7 +567,6 @@ footer p { font-size:0.8rem; color:var(--text-muted); }
       Sertifikatlar
     </span>
     <h2 class="section-title">Rasmiy hamkorliklar</h2>
-    <p class="section-subtitle" style="margin:0 auto">Xalqaro va mahalliy sertifikatlar kompaniyamiz malakasini tasdiqlaydi.</p>
   </div>
   <div class="certs-grid">
     <div class="cert-card cert-bitrix reveal">
@@ -440,6 +611,42 @@ footer p { font-size:0.8rem; color:var(--text-muted); }
       <div class="cert-body">
         <p>Technic Lab onlinePBX xizmatini joriy etish va qo'llab-quvvatlash bo'yicha sertifikatlangan hamkor.</p>
         <div class="cert-date">✓ 27 aprel 2026 yildan</div>
+      </div>
+    </div>
+  </div>
+  <div class="certs-grid visual-grid" aria-label="Sertifikat previewlari">
+    <div class="cert-slider" id="cert-slider">
+      <div class="cert-slider-viewport">
+        <div class="cert-slider-track" id="cert-slider-track">
+          <button class="cert-thumb reveal" type="button" data-cert-src="images/cert-bitrix.svg" data-cert-title="Bitrix24 sertifikati">
+            <img src="images/cert-bitrix.svg" alt="Bitrix24 sertifikati">
+            <div class="cert-thumb-info">
+              <strong>Bitrix24</strong>
+              <span>Biznes hamkor sertifikati</span>
+            </div>
+          </button>
+          <button class="cert-thumb reveal" type="button" data-cert-src="images/cert-amocrm.svg" data-cert-title="amoCRM sertifikati">
+            <img src="images/cert-amocrm.svg" alt="amoCRM sertifikati">
+            <div class="cert-thumb-info">
+              <strong>amoCRM</strong>
+              <span>amoSTART rasmiy hamkori</span>
+            </div>
+          </button>
+          <button class="cert-thumb reveal" type="button" data-cert-src="images/cert-itpark.svg" data-cert-title="IT Park guvohnomasi">
+            <img src="images/cert-itpark.svg" alt="IT Park guvohnomasi">
+            <div class="cert-thumb-info">
+              <strong>IT Park</strong>
+              <span>Rezident guvohnomasi</span>
+            </div>
+          </button>
+          <button class="cert-thumb reveal" type="button" data-cert-src="images/cert-onlinepbx.svg" data-cert-title="onlinePBX sertifikati">
+            <img src="images/cert-onlinepbx.svg" alt="onlinePBX sertifikati">
+            <div class="cert-thumb-info">
+              <strong>onlinePBX</strong>
+              <span>Hamkorlik sertifikati</span>
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -694,35 +901,35 @@ footer p { font-size:0.8rem; color:var(--text-muted); }
       <h2 class="section-title">Birgalikda ishlaylik</h2>
       <p class="section-subtitle">Loyihangiz haqida gaplashishga tayyormiz. Murojaat qiling — tez orada javob beramiz.</p>
       <div class="contact-methods">
-        <a href="tel:+998000000000" class="contact-method">
+        <a href="tel:+998555144909" class="contact-method">
           <div class="method-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.64 12a19.79 19.79 0 0 1-3.07-8.63 2 2 0 0 1 1.98-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.82-1.82a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
-          <div class="method-info"><small>Telefon</small><span>+998 (00) 000-00-00</span></div>
+          <div class="method-info"><small>Telefon</small><span>+998 55 514 49 09</span></div>
         </a>
-        <a href="mailto:diyorumirbekov80@gmail.com" class="contact-method">
+        <a href="mailto:admin@aloqapro.uz" class="contact-method">
           <div class="method-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div class="method-info"><small>Email</small><span>diyorumirbekov80@gmail.com</span></div>
+          <div class="method-info"><small>Email</small><span>admin@aloqapro.uz</span></div>
         </a>
-        <a href="https://t.me/techniclab" class="contact-method">
+        <a href="https://t.me/AloqaPro_uz" class="contact-method">
           <div class="method-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
-          <div class="method-info"><small>Telegram</small><span>@techniclab</span></div>
+          <div class="method-info"><small>Telegram</small><span>@AloqaPro_uz</span></div>
         </a>
-        <a href="#" class="contact-method">
+        <a href="https://www.google.com/maps/search/?api=1&query=Toshkent%20Shahar%2C%20Shayxontohur%20tumani%2C%20Zarqaynar%2039-41" class="contact-method" target="_blank" rel="noopener noreferrer">
           <div class="method-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-          <div class="method-info"><small>Manzil</small><span>Toshkent, O'zbekiston</span></div>
+          <div class="method-info"><small>Manzil</small><span>Toshkent Shahar, Shayxontohur tumani, Zarqaynar 39-41</span></div>
         </a>
       </div>
     </div>
     <div>
-      <div class="contact-form-card">
+      <form id="contact-form" class="contact-form-card" novalidate>
         <h3>Murojaat jo'natish</h3>
         <div class="form-row">
-          <div class="form-group"><label>Ismingiz *</label><input type="text" id="f-name" placeholder="Ism Familiya"></div>
-          <div class="form-group"><label>Telefon *</label><input type="tel" id="f-phone" placeholder="+998 __ ___ __ __"></div>
+          <div class="form-group"><label>Ismingiz *</label><input type="text" id="f-name" name="name" placeholder="Ism Familiya"></div>
+          <div class="form-group"><label>Telefon *</label><input type="tel" id="f-phone" name="phone" placeholder="+998 __ ___ __ __"></div>
         </div>
-        <div class="form-group"><label>Kompaniya</label><input type="text" id="f-company" placeholder="Kompaniyangiz nomi"></div>
+        <div class="form-group"><label>Kompaniya</label><input type="text" id="f-company" name="company" placeholder="Kompaniyangiz nomi"></div>
         <div class="form-group">
           <label>Xizmat turi</label>
-          <select id="f-service">
+          <select id="f-service" name="service">
             <option>CRM joriy etish</option>
             <option>AI yechimlar</option>
             <option>Veb sayt yaratish</option>
@@ -732,19 +939,23 @@ footer p { font-size:0.8rem; color:var(--text-muted); }
             <option>Boshqa</option>
           </select>
         </div>
-        <div class="form-group"><label>Xabar</label><textarea id="f-message" placeholder="Loyihangiz haqida qisqacha yozing..."></textarea></div>
-        <button class="btn-primary" style="width:100%;text-align:center;padding:0.9rem;display:flex;align-items:center;justify-content:center;gap:0.5rem" onclick="sendViaGmail()">
+        <div class="form-group"><label>Xabar</label><textarea id="f-message" name="message" placeholder="Loyihangiz haqida qisqacha yozing..."></textarea></div>
+        <button type="submit" class="btn-primary" style="width:100%;text-align:center;padding:0.9rem;display:flex;align-items:center;justify-content:center;gap:0.5rem">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           Gmail orqali jo'natish
         </button>
         <div id="send-status"></div>
-        <p style="font-size:0.74rem;color:var(--text-muted);margin-top:0.8rem;text-align:center;line-height:1.5">
-          Tugmani bosganingizda Gmail ochilib, tayyor xat ko'rsatiladi. Yuborish tugmasini bosing.
-        </p>
-      </div>
+      </form>
     </div>
   </div>
 </section>
+
+<div class="cert-modal" id="cert-modal" aria-hidden="true">
+  <div class="cert-modal-dialog">
+    <img id="cert-modal-image" src="" alt="Sertifikat preview">
+    <div class="cert-modal-hint">Yopish uchun rasm ustiga yoki fon ustiga bosing</div>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer>
@@ -784,6 +995,359 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   a.addEventListener('click', () => { document.querySelector('.nav-links').style.display = ''; });
 });
 
+// Language switcher
+const translations = {
+  uz: {
+    title: 'TECHNICLAB — IT Solutions',
+    nav: ['Kompaniya haqida', 'Sertifikatlar', 'Xizmatlar', 'Mijozlar', 'Aloqa'],
+    heroBadge: 'IT Park Rezidenti · Toshkent 2026',
+    heroTitleHtml: 'Biznesingizni <span>raqamlashtiring</span>',
+    heroText: "Zamonaviy CRM, AI yechimlar va veb-saytlar orqali biznesingizni yangi bosqichga olib chiqamiz.",
+    heroButtons: ["Xizmatlar →", "Bog'lanish"],
+    stats: ['Mijozlar', 'Sertifikatlar', 'Yillik tajriba', "Natijaga yo'nalish"],
+    aboutLabel: 'Kompaniya haqida',
+    aboutTitle: 'Ishonchli IT hamkoringiz',
+    aboutSubtitle: "Technic Lab — O'zbekistondagi yetakchi IT kompaniyalaridan biri. CRM, AI, veb va IP telephoniya bo'yicha sertifikatlangan mutaxassislar jamoasi.",
+    aboutFeatures: [
+      ['AI Yechimlar', "Sun'iy intellekt asosida jarayonlarni avtomatlashtirish"],
+      ['CRM Tizimlar', "amoCRM va Bitrix24 joriy etish va sozlash"],
+      ['Veb Ishlanmalar', "Zamonaviy saytlar va veb-ilovalar yaratish"],
+      ['IP Telephoniya', "onlinePBX yordamida aloqa tizimlarini qurish"]
+    ],
+    aboutCardTitle: 'Sertifikatlangan mutaxassislar jamoasi',
+    aboutCardText: "Technic Lab jamoasi xalqaro va mahalliy sertifikatlar bilan tasdiqlangan. Biz har bir loyihaga individual yondashamiz va natijaga yo'naltirilgan echimlar taklif qilamiz.",
+    aboutMini: ['Biznes hamkor', 'amoSTART hamkor', 'Rezident #5806', 'Sertifikatlangan'],
+    certLabel: 'Sertifikatlar',
+    certTitle: 'Rasmiy hamkorliklar',
+    certHiddenTypes: ['Biznes hamkor', 'amoSTART rasmiy hamkori', 'Texnopark rezidenti', 'Hamkor sertifikati'],
+    certHiddenBodies: [
+      'Technic Lab 1C-Bitrix kompaniyasining rasmiy biznes hamkori sifatida tasdiqlangan.',
+      'Technic Lab amoCRM ning amoSTART dasturining rasmiy hamkori. ID: 28597310.',
+      '"TECHNIC LAB" MCHJ Dasturiy mahsulotlar texnologik parkining rezidenti. Guvohnoma №5806.',
+      "Technic Lab onlinePBX xizmatini joriy etish va qo'llab-quvvatlash bo'yicha sertifikatlangan hamkor."
+    ],
+    certHiddenDates: ['✓ 30 mart 2026 yildan', '✓ 4 fevral 2025 yildan', '✓ 15 aprel 2026 yil', '✓ 27 aprel 2026 yildan'],
+    certThumbTitles: ['Bitrix24', 'amoCRM', 'IT Park', 'onlinePBX'],
+    certThumbSpans: ['Biznes hamkor sertifikati', 'amoSTART rasmiy hamkori', 'Rezident guvohnomasi', 'Hamkorlik sertifikati'],
+    certModalHint: 'Yopish uchun rasm ustiga yoki fon ustiga bosing',
+    certModalAlt: ['Bitrix24 sertifikati', 'amoCRM sertifikati', 'IT Park guvohnomasi', 'onlinePBX sertifikati'],
+    servicesLabel: 'Xizmatlar',
+    servicesTitle: 'Nima qila olamiz?',
+    servicesSubtitle: 'Biznesingiz ehtiyojlariga moslashtirilgan keng qamrovli IT xizmatlari.',
+    services: [
+      ['AI Yechimlar', "Chatbot, avtomatlashtirish, ma'lumot tahlili — sun'iy intellekt texnologiyalari yordamida biznesingizni optimallashtiramiz.", 'AI · ML'],
+      ['CRM Joriy Etish', "amoCRM va Bitrix24 tizimlarini to'liq sozlash, integratsiya va xodimlarni o'qitish.", 'CRM · ERP'],
+      ['Veb Saytlar', "Korporativ saytlar, landing pagelar va onlayn do'konlar. Zamonaviy dizayn va yuqori tezlik.", 'Web · Design'],
+      ['IP Telephoniya', "onlinePBX asosida virtual ATS tizimini qurish, CRM bilan integratsiya va qo'ng'iroqlarni tahlil qilish.", 'PBX · VoIP'],
+      ['Biznes Avtomatlashtirish', "Biznes jarayonlarni raqamlashtirish, workflow yaratish va takrorlanuvchi ishlarni avtomatlashtirish.", 'Automation'],
+      ['Integratsiyalar', "Turli tizimlar o'rtasida API integratsiyalari, ma'lumotlar sinxronizatsiyasi va ulanishlar.", 'API · Integration']
+    ],
+    clientsLabel: 'Mijozlar',
+    clientsTitle: 'Bizga ishongan kompaniyalar',
+    clientsSubtitle: "O'zbekistoning yetakchi kompaniyalari biz bilan hamkorlik qilmoqda",
+    contactLabel: 'Aloqa',
+    contactTitle: 'Birgalikda ishlaylik',
+    contactSubtitle: 'Loyihangiz haqida gaplashishga tayyormiz. Murojaat qiling — tez orada javob beramiz.',
+    contactSmalls: ['Telefon', 'Email', 'Telegram', 'Manzil'],
+    formTitle: "Murojaat jo'natish",
+    formLabels: ['Ismingiz *', 'Telefon *', 'Kompaniya', 'Xizmat turi', 'Xabar'],
+    formPlaceholders: ['Ism Familiya', '+998 __ ___ __ __', 'Kompaniyangiz nomi', 'Loyihangiz haqida qisqacha yozing...'],
+    formOptions: ['CRM joriy etish', 'AI yechimlar', 'Veb sayt yaratish', 'IP Telephoniya', 'Biznes avtomatlashtirish', 'Integratsiyalar', 'Boshqa'],
+    formButton: "Gmail orqali jo'natish",
+    footerText: '© 2026 Technic Lab MCHJ · IT Park rezidenti',
+    footerLinks: ['Haqida', 'Sertifikatlar', 'Xizmatlar', 'Mijozlar'],
+    validationError: '⚠️ Iltimos, ism va telefon raqamingizni kiriting.',
+    gmailOpened: "✓ Gmail ochildi! Xatni yuborishni unutmang.",
+    mailSubjectPrefix: 'Techniclab.uz — Yangi murojaat:',
+    mailBodyTitle: 'Yangi murojaat — Techniclab.uz saytidan',
+    mailName: 'Ism',
+    mailPhone: 'Telefon',
+    mailCompany: 'Kompaniya',
+    mailService: 'Xizmat',
+    mailMessage: 'Xabar',
+    mailUnspecified: "Ko'rsatilmagan",
+    mailNoMessage: 'Xabar yozilmagan',
+    mailSentAt: 'Yuborildi',
+    locale: 'uz-UZ'
+  },
+  ru: {
+    title: 'TECHNICLAB — IT Solutions',
+    nav: ['О компании', 'Сертификаты', 'Услуги', 'Клиенты', 'Контакты'],
+    heroBadge: 'Резидент IT Park · Ташкент 2026',
+    heroTitleHtml: 'Переведите бизнес в <span>цифровой формат</span>',
+    heroText: 'Выводим ваш бизнес на новый уровень с помощью современных CRM, AI-решений и веб-сайтов.',
+    heroButtons: ['Услуги →', 'Связаться'],
+    stats: ['Клиенты', 'Сертификаты', 'Опыт работы', 'Ориентация на результат'],
+    aboutLabel: 'О компании',
+    aboutTitle: 'Ваш надежный IT-партнер',
+    aboutSubtitle: 'Technic Lab — одна из ведущих IT-компаний Узбекистана. Команда сертифицированных специалистов по CRM, AI, веб-разработке и IP-телефонии.',
+    aboutFeatures: [
+      ['AI-решения', 'Автоматизация процессов на основе искусственного интеллекта'],
+      ['CRM-системы', 'Внедрение и настройка amoCRM и Bitrix24'],
+      ['Веб-разработка', 'Создание современных сайтов и веб-приложений'],
+      ['IP-телефония', 'Построение систем связи на базе onlinePBX']
+    ],
+    aboutCardTitle: 'Команда сертифицированных специалистов',
+    aboutCardText: 'Команда Technic Lab подтверждена международными и локальными сертификатами. Мы подходим к каждому проекту индивидуально и предлагаем решения, ориентированные на результат.',
+    aboutMini: ['Бизнес-партнер', 'Партнер amoSTART', 'Резидент #5806', 'Сертифицировано'],
+    certLabel: 'Сертификаты',
+    certTitle: 'Официальные партнерства',
+    certHiddenTypes: ['Бизнес-партнер', 'Официальный партнер amoSTART', 'Резидент технопарка', 'Партнерский сертификат'],
+    certHiddenBodies: [
+      'Technic Lab подтвержден как официальный бизнес-партнер компании 1C-Bitrix.',
+      'Technic Lab является официальным партнером программы amoSTART от amoCRM. ID: 28597310.',
+      'ООО "TECHNIC LAB" является резидентом технологического парка программных продуктов. Свидетельство №5806.',
+      'Technic Lab является сертифицированным партнером по внедрению и поддержке onlinePBX.'
+    ],
+    certHiddenDates: ['✓ с 30 марта 2026', '✓ с 4 февраля 2025', '✓ 15 апреля 2026', '✓ с 27 апреля 2026'],
+    certThumbTitles: ['Bitrix24', 'amoCRM', 'IT Park', 'onlinePBX'],
+    certThumbSpans: ['Сертификат бизнес-партнера', 'Официальный партнер amoSTART', 'Свидетельство резидента', 'Партнерский сертификат'],
+    certModalHint: 'Нажмите на изображение или фон, чтобы закрыть',
+    certModalAlt: ['Сертификат Bitrix24', 'Сертификат amoCRM', 'Свидетельство IT Park', 'Сертификат onlinePBX'],
+    servicesLabel: 'Услуги',
+    servicesTitle: 'Что мы умеем?',
+    servicesSubtitle: 'Комплексные IT-услуги, адаптированные под задачи вашего бизнеса.',
+    services: [
+      ['AI-решения', 'Чат-боты, автоматизация, анализ данных — оптимизируем ваш бизнес с помощью технологий искусственного интеллекта.', 'AI · ML'],
+      ['Внедрение CRM', 'Полная настройка amoCRM и Bitrix24, интеграции и обучение сотрудников.', 'CRM · ERP'],
+      ['Веб-сайты', 'Корпоративные сайты, лендинги и интернет-магазины. Современный дизайн и высокая скорость.', 'Web · Design'],
+      ['IP-телефония', 'Построение виртуальной АТС на базе onlinePBX, интеграция с CRM и аналитика звонков.', 'PBX · VoIP'],
+      ['Автоматизация бизнеса', 'Оцифровка бизнес-процессов, создание workflow и автоматизация повторяющихся задач.', 'Automation'],
+      ['Интеграции', 'API-интеграции между различными системами, синхронизация данных и подключение сервисов.', 'API · Integration']
+    ],
+    clientsLabel: 'Клиенты',
+    clientsTitle: 'Компании, которые нам доверяют',
+    clientsSubtitle: 'Ведущие компании Узбекистана сотрудничают с нами',
+    contactLabel: 'Контакты',
+    contactTitle: 'Давайте работать вместе',
+    contactSubtitle: 'Мы готовы обсудить ваш проект. Свяжитесь с нами — ответим в ближайшее время.',
+    contactSmalls: ['Телефон', 'Email', 'Telegram', 'Адрес'],
+    formTitle: 'Отправить заявку',
+    formLabels: ['Ваше имя *', 'Телефон *', 'Компания', 'Тип услуги', 'Сообщение'],
+    formPlaceholders: ['Имя Фамилия', '+998 __ ___ __ __', 'Название вашей компании', 'Кратко опишите ваш проект...'],
+    formOptions: ['Внедрение CRM', 'AI-решения', 'Создание сайта', 'IP-телефония', 'Автоматизация бизнеса', 'Интеграции', 'Другое'],
+    formButton: 'Отправить через Gmail',
+    footerText: '© 2026 Technic Lab MCHJ · резидент IT Park',
+    footerLinks: ['О компании', 'Сертификаты', 'Услуги', 'Клиенты'],
+    validationError: '⚠️ Пожалуйста, укажите имя и номер телефона.',
+    gmailOpened: '✓ Gmail открыт! Не забудьте отправить письмо.',
+    mailSubjectPrefix: 'Techniclab.uz — Новая заявка:',
+    mailBodyTitle: 'Новая заявка с сайта Techniclab.uz',
+    mailName: 'Имя',
+    mailPhone: 'Телефон',
+    mailCompany: 'Компания',
+    mailService: 'Услуга',
+    mailMessage: 'Сообщение',
+    mailUnspecified: 'Не указано',
+    mailNoMessage: 'Сообщение не указано',
+    mailSentAt: 'Отправлено',
+    locale: 'ru-RU'
+  },
+  en: {
+    title: 'TECHNICLAB — IT Solutions',
+    nav: ['About', 'Certificates', 'Services', 'Clients', 'Contact'],
+    heroBadge: 'IT Park Resident · Tashkent 2026',
+    heroTitleHtml: 'Take your business <span>digital</span>',
+    heroText: 'Move your business to the next level with modern CRM, AI solutions, and high-performing websites.',
+    heroButtons: ['Services →', 'Contact us'],
+    stats: ['Clients', 'Certificates', 'Years of experience', 'Result-driven'],
+    aboutLabel: 'About',
+    aboutTitle: 'Your reliable IT partner',
+    aboutSubtitle: 'Technic Lab is one of Uzbekistan’s leading IT companies. Our team is certified in CRM, AI, web development, and IP telephony.',
+    aboutFeatures: [
+      ['AI Solutions', 'Process automation powered by artificial intelligence'],
+      ['CRM Systems', 'Implementation and setup of amoCRM and Bitrix24'],
+      ['Web Development', 'Creation of modern websites and web applications'],
+      ['IP Telephony', 'Building communication systems with onlinePBX']
+    ],
+    aboutCardTitle: 'Certified expert team',
+    aboutCardText: 'The Technic Lab team is backed by international and local certificates. We approach every project individually and deliver results-oriented solutions.',
+    aboutMini: ['Business partner', 'amoSTART partner', 'Resident #5806', 'Certified'],
+    certLabel: 'Certificates',
+    certTitle: 'Official partnerships',
+    certHiddenTypes: ['Business partner', 'Official amoSTART partner', 'Technology park resident', 'Partner certificate'],
+    certHiddenBodies: [
+      'Technic Lab is confirmed as an official business partner of 1C-Bitrix.',
+      'Technic Lab is an official partner of amoCRM’s amoSTART program. ID: 28597310.',
+      '"TECHNIC LAB" LLC is a resident of the software technology park. Certificate No. 5806.',
+      'Technic Lab is a certified partner for implementing and supporting onlinePBX.'
+    ],
+    certHiddenDates: ['✓ since 30 March 2026', '✓ since 4 February 2025', '✓ 15 April 2026', '✓ since 27 April 2026'],
+    certThumbTitles: ['Bitrix24', 'amoCRM', 'IT Park', 'onlinePBX'],
+    certThumbSpans: ['Business partner certificate', 'Official amoSTART partner', 'Resident certificate', 'Partnership certificate'],
+    certModalHint: 'Click the image or background to close',
+    certModalAlt: ['Bitrix24 certificate', 'amoCRM certificate', 'IT Park certificate', 'onlinePBX certificate'],
+    servicesLabel: 'Services',
+    servicesTitle: 'What can we do?',
+    servicesSubtitle: 'Comprehensive IT services tailored to your business needs.',
+    services: [
+      ['AI Solutions', 'Chatbots, automation, and data analysis — we optimize your business with artificial intelligence technologies.', 'AI · ML'],
+      ['CRM Implementation', 'Full setup of amoCRM and Bitrix24, integrations, and staff training.', 'CRM · ERP'],
+      ['Websites', 'Corporate websites, landing pages, and online stores with modern design and high speed.', 'Web · Design'],
+      ['IP Telephony', 'Build a virtual PBX system with onlinePBX, integrate it with CRM, and analyze calls.', 'PBX · VoIP'],
+      ['Business Automation', 'Digitize business processes, create workflows, and automate repetitive tasks.', 'Automation'],
+      ['Integrations', 'API integrations between various systems, data synchronization, and service connections.', 'API · Integration']
+    ],
+    clientsLabel: 'Clients',
+    clientsTitle: 'Companies that trust us',
+    clientsSubtitle: 'Leading companies in Uzbekistan work with us',
+    contactLabel: 'Contact',
+    contactTitle: 'Let’s work together',
+    contactSubtitle: 'We are ready to discuss your project. Reach out and we will reply soon.',
+    contactSmalls: ['Phone', 'Email', 'Telegram', 'Address'],
+    formTitle: 'Send a request',
+    formLabels: ['Your name *', 'Phone *', 'Company', 'Service type', 'Message'],
+    formPlaceholders: ['Full name', '+998 __ ___ __ __', 'Your company name', 'Briefly describe your project...'],
+    formOptions: ['CRM implementation', 'AI solutions', 'Website development', 'IP telephony', 'Business automation', 'Integrations', 'Other'],
+    formButton: 'Send via Gmail',
+    footerText: '© 2026 Technic Lab MCHJ · IT Park resident',
+    footerLinks: ['About', 'Certificates', 'Services', 'Clients'],
+    validationError: '⚠️ Please enter your name and phone number.',
+    gmailOpened: '✓ Gmail opened! Do not forget to send the email.',
+    mailSubjectPrefix: 'Techniclab.uz — New request:',
+    mailBodyTitle: 'New request from Techniclab.uz',
+    mailName: 'Name',
+    mailPhone: 'Phone',
+    mailCompany: 'Company',
+    mailService: 'Service',
+    mailMessage: 'Message',
+    mailUnspecified: 'Not specified',
+    mailNoMessage: 'No message provided',
+    mailSentAt: 'Sent at',
+    locale: 'en-US'
+  }
+};
+
+let currentLang = localStorage.getItem('site-language') || 'uz';
+
+function setInlineIconText(selector, text) {
+  const el = document.querySelector(selector);
+  if (!el) return;
+  const textNode = Array.from(el.childNodes).find((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+  if (textNode) textNode.textContent = ` ${text}`;
+}
+
+function applyLanguage(lang) {
+  const t = translations[lang] || translations.uz;
+  currentLang = lang;
+  localStorage.setItem('site-language', lang);
+  document.documentElement.lang = lang;
+  document.title = t.title;
+
+  const navLinks = document.querySelectorAll('.nav-links a');
+  navLinks.forEach((link, index) => { if (t.nav[index]) link.textContent = t.nav[index]; });
+  document.querySelectorAll('.lang-btn').forEach((btn) => btn.classList.toggle('active', btn.dataset.lang === lang));
+
+  setInlineIconText('.banner-badge', t.heroBadge);
+  document.querySelector('.banner-text-box h1').innerHTML = t.heroTitleHtml;
+  document.querySelector('.banner-text-box p').textContent = t.heroText;
+  document.querySelectorAll('.banner-btns a')[0].textContent = t.heroButtons[0];
+  document.querySelectorAll('.banner-btns a')[1].textContent = t.heroButtons[1];
+  document.querySelector('#hero-banner img').alt = t.heroTitleHtml.replace(/<[^>]+>/g, ' ');
+
+  document.querySelectorAll('.stats-bar .stat-item p').forEach((el, index) => { if (t.stats[index]) el.textContent = t.stats[index]; });
+
+  setInlineIconText('#about .section-label', t.aboutLabel);
+  document.querySelector('#about .section-title').textContent = t.aboutTitle;
+  document.querySelector('#about .section-subtitle').textContent = t.aboutSubtitle;
+  document.querySelectorAll('#about .feature-card').forEach((card, index) => {
+    const item = t.aboutFeatures[index];
+    if (!item) return;
+    card.querySelector('h4').textContent = item[0];
+    card.querySelector('p').textContent = item[1];
+  });
+  document.querySelector('.about-card-main h3').textContent = t.aboutCardTitle;
+  document.querySelector('.about-card-main p').textContent = t.aboutCardText;
+  document.querySelectorAll('.cert-mini').forEach((mini, index) => {
+    const strong = mini.querySelector('strong');
+    if (strong) {
+      const label = t.aboutMini[index] || '';
+      mini.innerHTML = `${strong.outerHTML}${label}`;
+    }
+  });
+
+  setInlineIconText('#certificates .section-label', t.certLabel);
+  document.querySelector('#certificates .section-title').textContent = t.certTitle;
+  document.querySelectorAll('.cert-logo-text').forEach((el, index) => {
+    const brands = ['Bitrix24', 'amoCRM', 'IT Park Uzbekistan', 'onlinePBX'];
+    if (brands[index]) el.textContent = brands[index];
+  });
+  document.querySelectorAll('#certificates .cert-type').forEach((el, index) => { if (t.certHiddenTypes[index]) el.textContent = t.certHiddenTypes[index]; });
+  document.querySelectorAll('#certificates .cert-body p').forEach((el, index) => { if (t.certHiddenBodies[index]) el.textContent = t.certHiddenBodies[index]; });
+  document.querySelectorAll('#certificates .cert-date').forEach((el, index) => { if (t.certHiddenDates[index]) el.textContent = t.certHiddenDates[index]; });
+  document.querySelectorAll('.cert-thumb').forEach((thumb, index) => {
+    const strong = thumb.querySelector('strong');
+    const span = thumb.querySelector('.cert-thumb-info span');
+    if (strong && t.certThumbTitles[index]) strong.textContent = t.certThumbTitles[index];
+    if (span && t.certThumbSpans[index]) span.textContent = t.certThumbSpans[index];
+    if (t.certModalAlt[index]) {
+      thumb.dataset.certTitle = t.certModalAlt[index];
+      const img = thumb.querySelector('img');
+      if (img) img.alt = t.certModalAlt[index];
+    }
+  });
+  document.querySelector('.cert-modal-hint').textContent = t.certModalHint;
+
+  setInlineIconText('#services .section-label', t.servicesLabel);
+  document.querySelector('#services .section-title').textContent = t.servicesTitle;
+  document.querySelector('#services .section-subtitle').textContent = t.servicesSubtitle;
+  document.querySelectorAll('#services .service-card').forEach((card, index) => {
+    const item = t.services[index];
+    if (!item) return;
+    card.querySelector('h3').textContent = item[0];
+    card.querySelector('p').textContent = item[1];
+    card.querySelector('.service-tag').textContent = item[2];
+  });
+
+  setInlineIconText('#clients .section-label', t.clientsLabel);
+  document.querySelector('#clients .section-title').textContent = t.clientsTitle;
+  document.querySelector('#clients .clients-intro > p').textContent = t.clientsSubtitle;
+
+  setInlineIconText('#contact .section-label', t.contactLabel);
+  document.querySelector('#contact .section-title').textContent = t.contactTitle;
+  document.querySelector('#contact .section-subtitle').textContent = t.contactSubtitle;
+  document.querySelectorAll('#contact .method-info small').forEach((el, index) => { if (t.contactSmalls[index]) el.textContent = t.contactSmalls[index]; });
+  document.querySelector('.contact-form-card h3').textContent = t.formTitle;
+  document.querySelectorAll('#contact .form-group label').forEach((el, index) => { if (t.formLabels[index]) el.textContent = t.formLabels[index]; });
+  document.getElementById('f-name').placeholder = t.formPlaceholders[0];
+  document.getElementById('f-phone').placeholder = t.formPlaceholders[1];
+  document.getElementById('f-company').placeholder = t.formPlaceholders[2];
+  document.getElementById('f-message').placeholder = t.formPlaceholders[3];
+  document.querySelectorAll('#f-service option').forEach((el, index) => { if (t.formOptions[index]) el.textContent = t.formOptions[index]; });
+  const formButtonTextNode = Array.from(document.querySelector('#contact .btn-primary').childNodes).find((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+  if (formButtonTextNode) formButtonTextNode.textContent = ` ${t.formButton}`;
+
+  document.querySelector('footer p').textContent = t.footerText;
+  document.querySelectorAll('.footer-links a').forEach((el, index) => { if (t.footerLinks[index]) el.textContent = t.footerLinks[index]; });
+}
+
+document.querySelectorAll('.lang-btn').forEach((btn) => {
+  btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+});
+
+applyLanguage(currentLang);
+
+// Copy protection
+function isEditableTarget(target) {
+  return target instanceof Element && Boolean(target.closest('input, textarea, select'));
+}
+
+document.addEventListener('contextmenu', (event) => {
+  if (!isEditableTarget(event.target)) event.preventDefault();
+});
+document.addEventListener('copy', (event) => {
+  if (!isEditableTarget(event.target)) event.preventDefault();
+});
+document.addEventListener('cut', (event) => {
+  if (!isEditableTarget(event.target)) event.preventDefault();
+});
+document.addEventListener('selectstart', (event) => {
+  if (!isEditableTarget(event.target)) event.preventDefault();
+});
+document.addEventListener('dragstart', (event) => {
+  if (!isEditableTarget(event.target)) event.preventDefault();
+});
+
 // Active nav
 const navSections = document.querySelectorAll('section[id]');
 window.addEventListener('scroll', () => {
@@ -794,6 +1358,142 @@ window.addEventListener('scroll', () => {
     const link = document.querySelector(`.nav-links a[href="#${id}"]`);
     if (link) link.style.color = (scrollY >= top && scrollY < top + s.offsetHeight) ? 'var(--accent)' : '';
   });
+});
+
+// Certificate preview
+const certModal = document.getElementById('cert-modal');
+const certModalImage = document.getElementById('cert-modal-image');
+const certSlider = document.getElementById('cert-slider');
+const certSliderViewport = certSlider?.querySelector('.cert-slider-viewport');
+const certSliderTrack = document.getElementById('cert-slider-track');
+const certSlides = Array.from(document.querySelectorAll('.cert-slider .cert-thumb'));
+let certSlideIndex = 0;
+let certSliderTimer = null;
+let certPointerStartX = 0;
+let certPointerDeltaX = 0;
+let certIsDragging = false;
+let certSuppressClick = false;
+
+function renderCertSlider() {
+  if (!certSliderTrack) return;
+  certSlides.forEach((slide, index) => {
+    slide.classList.remove('is-active', 'is-prev', 'is-next', 'is-hidden-left', 'is-hidden-right');
+    if (index === certSlideIndex) {
+      slide.classList.add('is-active');
+      return;
+    }
+    if (index === (certSlideIndex - 1 + certSlides.length) % certSlides.length) {
+      slide.classList.add('is-prev');
+      return;
+    }
+    if (index === (certSlideIndex + 1) % certSlides.length) {
+      slide.classList.add('is-next');
+      return;
+    }
+    if (index < certSlideIndex) {
+      slide.classList.add('is-hidden-left');
+    } else {
+      slide.classList.add('is-hidden-right');
+    }
+  });
+}
+
+function goToCertSlide(index) {
+  if (!certSlides.length) return;
+  certSlideIndex = (index + certSlides.length) % certSlides.length;
+  renderCertSlider();
+}
+
+function startCertSlider() {
+  if (!certSlides.length) return;
+  stopCertSlider();
+  certSliderTimer = setInterval(() => {
+    goToCertSlide(certSlideIndex + 1);
+  }, 3200);
+}
+
+function stopCertSlider() {
+  if (certSliderTimer) {
+    clearInterval(certSliderTimer);
+    certSliderTimer = null;
+  }
+}
+
+if (certSlides.length) {
+  renderCertSlider();
+  startCertSlider();
+}
+
+document.querySelectorAll('.cert-thumb').forEach((button) => {
+  button.addEventListener('click', () => {
+    if (certSuppressClick) {
+      certSuppressClick = false;
+      return;
+    }
+    certModalImage.src = button.dataset.certSrc;
+    certModalImage.alt = button.dataset.certTitle || 'Sertifikat preview';
+    certModal.classList.add('open');
+    certModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+function closeCertModal() {
+  certModal.classList.remove('open');
+  certModal.setAttribute('aria-hidden', 'true');
+  certModalImage.src = '';
+  document.body.style.overflow = '';
+}
+
+certModal.addEventListener('click', closeCertModal);
+certSlider?.addEventListener('mouseenter', stopCertSlider);
+certSlider?.addEventListener('mouseleave', startCertSlider);
+certSliderViewport?.addEventListener('pointerdown', (event) => {
+  certPointerStartX = event.clientX;
+  certPointerDeltaX = 0;
+  certIsDragging = true;
+  certSuppressClick = false;
+  stopCertSlider();
+  certSliderViewport.style.cursor = 'grabbing';
+});
+certSliderViewport?.addEventListener('pointermove', (event) => {
+  if (!certIsDragging) return;
+  certPointerDeltaX = event.clientX - certPointerStartX;
+  if (Math.abs(certPointerDeltaX) > 12) {
+    certSuppressClick = true;
+  }
+});
+certSliderViewport?.addEventListener('pointerup', () => {
+  if (!certIsDragging) return;
+  certIsDragging = false;
+  certSliderViewport.style.cursor = 'grab';
+  if (certPointerDeltaX <= -50) {
+    goToCertSlide(certSlideIndex + 1);
+  } else if (certPointerDeltaX >= 50) {
+    goToCertSlide(certSlideIndex - 1);
+  }
+  setTimeout(() => { certSuppressClick = false; }, 0);
+  startCertSlider();
+});
+certSliderViewport?.addEventListener('pointerleave', () => {
+  if (!certIsDragging) return;
+  certIsDragging = false;
+  certSliderViewport.style.cursor = 'grab';
+  certPointerDeltaX = 0;
+  setTimeout(() => { certSuppressClick = false; }, 0);
+  startCertSlider();
+});
+certSliderViewport?.addEventListener('pointercancel', () => {
+  certIsDragging = false;
+  certSliderViewport.style.cursor = 'grab';
+  certPointerDeltaX = 0;
+  setTimeout(() => { certSuppressClick = false; }, 0);
+  startCertSlider();
+});
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && certModal.classList.contains('open')) {
+    closeCertModal();
+  }
 });
 
 // Gmail send
@@ -811,7 +1511,7 @@ function sendViaGmail() {
     return;
   }
 
-  const to = 'diyorumirbekov80@gmail.com';
+  const to = 'admin@aloqapro.uz';
   const subject = encodeURIComponent(`Techniclab.uz — Yangi murojaat: ${service}`);
   const body = encodeURIComponent(
 `Yangi murojaat — Techniclab.uz saytidan
@@ -835,6 +1535,190 @@ Yuborildi: ${new Date().toLocaleString('uz-UZ')}`
   status.textContent = '✓ Gmail ochildi! Xatni yuborishni unutmang.';
   setTimeout(() => { status.style.display = 'none'; }, 6000);
 }
+function sendViaGmail() {
+  const t = translations[currentLang] || translations.uz;
+  const name = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const company = document.getElementById('f-company').value.trim();
+  const service = document.getElementById('f-service').value;
+  const message = document.getElementById('f-message').value.trim();
+  const status = document.getElementById('send-status');
+
+  if (!name || !phone) {
+    status.className = 'error';
+    status.style.display = 'block';
+    status.textContent = t.validationError;
+    return;
+  }
+
+  const to = 'admin@aloqapro.uz';
+  const subject = encodeURIComponent(`${t.mailSubjectPrefix} ${service}`);
+  const body = encodeURIComponent(
+`${t.mailBodyTitle}
+${'—'.repeat(40)}
+
+${t.mailName}: ${name}
+${t.mailPhone}: ${phone}
+${t.mailCompany}: ${company || t.mailUnspecified}
+${t.mailService}: ${service}
+
+${t.mailMessage}:
+${message || t.mailNoMessage}
+
+${'—'.repeat(40)}
+${t.mailSentAt}: ${new Date().toLocaleString(t.locale)}`
+  );
+
+  window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`, '_blank');
+
+  status.className = 'success';
+  status.style.display = 'block';
+  status.textContent = t.gmailOpened;
+  setTimeout(() => { status.style.display = 'none'; }, 6000);
+}
+
+const SUPABASE_URL = 'https://nwkefvkimhtepzenwnwj.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_qWos73KFmtm0UDdpLHfrEw_-U240WbT';
+const EDGE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/send-to-amocrm`;
+
+function normalizeFieldValue(value) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function queryFirstField(form, selectors) {
+  for (const selector of selectors) {
+    const field = form.querySelector(selector);
+    if (field) return field;
+  }
+  return null;
+}
+
+function getMappedField(form, fieldType) {
+  const selectorMap = {
+    name: [
+      '[name="name"]',
+      '[name="ism"]',
+      '#f-name',
+      'input[id*="name" i]',
+      'input[id*="ism" i]',
+      'input[name*="name" i]',
+      'input[name*="ism" i]'
+    ],
+    phone: [
+      '[name="phone"]',
+      '[name="telefon"]',
+      '#f-phone',
+      'input[type="tel"]',
+      'input[id*="phone" i]',
+      'input[id*="telefon" i]',
+      'input[name*="phone" i]',
+      'input[name*="telefon" i]'
+    ],
+    message: [
+      '[name="message"]',
+      '[name="xabar"]',
+      '#f-message',
+      'textarea[id*="message" i]',
+      'textarea[id*="xabar" i]',
+      'textarea[name*="message" i]',
+      'textarea[name*="xabar" i]',
+      'textarea'
+    ]
+  };
+
+  return queryFirstField(form, selectorMap[fieldType] || []);
+}
+
+function getStatusElement(form) {
+  let status = form.querySelector('#send-status, .send-status, [data-send-status]');
+  if (!status) {
+    status = document.createElement('div');
+    status.id = 'send-status';
+    form.appendChild(status);
+  }
+  return status;
+}
+
+function showFormStatus(form, type, message) {
+  const status = getStatusElement(form);
+  status.className = type;
+  status.style.display = 'block';
+  status.textContent = message;
+}
+
+async function submitToEdgeFunction(event) {
+  event.preventDefault();
+
+  const form = event.currentTarget;
+  const nameField = getMappedField(form, 'name');
+  const phoneField = getMappedField(form, 'phone');
+  const messageField = getMappedField(form, 'message');
+  const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+
+  const name = normalizeFieldValue(nameField ? nameField.value : '');
+  const phone = normalizeFieldValue(phoneField ? phoneField.value : '');
+  const message = normalizeFieldValue(messageField ? messageField.value : '');
+
+  if (!name || !phone) {
+    showFormStatus(form, 'error', 'Iltimos, ism va telefon raqamingizni kiriting.');
+    return;
+  }
+
+  if (submitButton) {
+    if (!submitButton.dataset.originalHtml) {
+      submitButton.dataset.originalHtml = submitButton.innerHTML;
+    }
+    submitButton.disabled = true;
+    submitButton.innerHTML = 'Yuborilmoqda...';
+  }
+
+  try {
+    const response = await fetch(EDGE_FUNCTION_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY
+      },
+      body: JSON.stringify({
+        name,
+        phone,
+        message,
+        page_url: window.location.href
+      })
+    });
+
+    const result = await response.json().catch(() => null);
+
+    if (!response.ok || !result || result.ok !== true) {
+      throw new Error(`Unexpected response: ${response.status}`);
+    }
+
+    form.reset();
+    showFormStatus(form, 'success', 'Murojaatingiz yuborildi!');
+  } catch (error) {
+    console.error('Contact form submission failed:', error);
+    showFormStatus(form, 'error', 'Xatolik yuz berdi. Qayta urinib ko\'ring.');
+  } finally {
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.innerHTML = submitButton.dataset.originalHtml || submitButton.innerHTML;
+    }
+  }
+}
+
+function initEdgeContactForms() {
+  document.querySelectorAll('form').forEach((form) => {
+    const nameField = getMappedField(form, 'name');
+    const phoneField = getMappedField(form, 'phone');
+
+    if (!form.dataset.edgeFunctionBound && nameField && phoneField) {
+      form.dataset.edgeFunctionBound = 'true';
+      form.addEventListener('submit', submitToEdgeFunction);
+    }
+  });
+}
+
+initEdgeContactForms();
 </script>
 </body>
 </html>
