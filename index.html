@@ -1529,24 +1529,54 @@ window.addEventListener('keydown', (event) => {
   }
 });
 
+function getActiveTranslation() {
+  if (typeof translations !== 'undefined' && typeof currentLang !== 'undefined' && translations[currentLang]) {
+    return translations[currentLang];
+  }
+  if (typeof translations !== 'undefined' && translations.uz) {
+    return translations.uz;
+  }
+  return {
+    validationError: "Iltimos, ism va telefon raqamingizni kiriting.",
+    phoneInvalid: "Telefon raqami aynan 9 ta raqamdan iborat bo'lishi kerak.",
+    submitLoading: "Yuborilmoqda...",
+    successMessage: "Murojaatingiz qabul qilindi, tez orada menejerlarimiz siz bilan bog'lanadi.",
+    requestError: "Xatolik yuz berdi. Qayta urinib ko'ring.",
+    gmailOpened: "Gmail ochildi. Xatni yuborishni unutmang.",
+    mailSubjectPrefix: "Techniclab.uz | Yangi murojaat:",
+    mailBodyTitle: "Yangi murojaat Techniclab.uz saytidan",
+    mailName: "Ism",
+    mailPhone: "Telefon",
+    mailCompany: "Kompaniya",
+    mailService: "Xizmat",
+    mailMessage: "Xabar",
+    mailUnspecified: "Ko'rsatilmagan",
+    mailNoMessage: "Xabar yozilmagan",
+    mailSentAt: "Yuborildi",
+    locale: "uz-UZ"
+  };
+}
+
 function sendViaGmail() {
-  const t = translations[currentLang] || translations.uz;
-  const name = document.getElementById('f-name').value.trim();
-  const phone = document.getElementById('f-phone').value.trim();
-  const company = document.getElementById('f-company').value.trim();
-  const service = document.getElementById('f-service').value;
-  const message = document.getElementById('f-message').value.trim();
+  const t = getActiveTranslation();
+  const name = document.getElementById('f-name')?.value.trim() || '';
+  const phone = document.getElementById('f-phone')?.value.trim() || '';
+  const company = document.getElementById('f-company')?.value.trim() || '';
+  const service = document.getElementById('f-service')?.value || '';
+  const message = document.getElementById('f-message')?.value.trim() || '';
   const status = document.getElementById('send-status');
 
   if (!name || !phone) {
-    status.className = 'error';
-    status.style.display = 'block';
-    status.textContent = t.validationError;
+    if (status) {
+      status.className = 'error';
+      status.style.display = 'block';
+      status.textContent = t.validationError;
+    }
     return;
   }
 
   const to = 'admin@aloqapro.uz';
-  const subject = encodeURIComponent(`${t.mailSubjectPrefix} ${service}`);
+  const subject = encodeURIComponent(`${t.mailSubjectPrefix} ${service || 'Murojaat'}`);
   const body = encodeURIComponent(
 `${t.mailBodyTitle}
 ${'-'.repeat(40)}
@@ -1554,26 +1584,27 @@ ${'-'.repeat(40)}
 ${t.mailName}: ${name}
 ${t.mailPhone}: ${phone}
 ${t.mailCompany}: ${company || t.mailUnspecified}
-${t.mailService}: ${service}
+${t.mailService}: ${service || t.mailUnspecified}
 
 ${t.mailMessage}:
 ${message || t.mailNoMessage}
 
 ${'-'.repeat(40)}
-${t.mailSentAt}: ${new Date().toLocaleString(t.locale)}`
+${t.mailSentAt}: ${new Date().toLocaleString(t.locale || 'uz-UZ')}`
   );
 
   window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`, '_blank');
 
-  status.className = 'success';
-  status.style.display = 'block';
-  status.textContent = t.gmailOpened;
-  setTimeout(() => { status.style.display = 'none'; }, 6000);
+  if (status) {
+    status.className = 'success';
+    status.style.display = 'block';
+    status.textContent = t.gmailOpened;
+    setTimeout(() => { status.style.display = 'none'; }, 6000);
+  }
 }
 
-const SUPABASE_URL = 'https://nwkefvkimhtepzenwnwj.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_qWos73KFmtm0UDdpLHfrEw_-U240WbT';
-const EDGE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/send-to-amocrm`;
+// Google Apps Script Web App URL
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwvmsKYSJ_9p0ZGLeqytsxdCU-RzbvRRE7zN91CYPNGfkbZcaM6zphdK21DCbDEc--s/exec';
 const PHONE_PREFIX = '+998';
 
 function normalizeFieldValue(value) {
@@ -1655,6 +1686,20 @@ function getMappedField(form, fieldType) {
       'input[name*="phone" i]',
       'input[name*="telefon" i]'
     ],
+    company: [
+      '[name="company"]',
+      '[name="kompaniya"]',
+      '#f-company',
+      'input[id*="company" i]',
+      'input[name*="company" i]'
+    ],
+    service: [
+      '[name="service"]',
+      '[name="xizmat"]',
+      '#f-service',
+      'select[name="service"]',
+      'select[id*="service" i]'
+    ],
     message: [
       '[name="message"]',
       '[name="xabar"]',
@@ -1687,19 +1732,23 @@ function showFormStatus(form, type, message) {
   status.textContent = message;
 }
 
-async function submitToEdgeFunction(event) {
+async function submitToGoogleScript(event) {
   event.preventDefault();
 
+  const t = getActiveTranslation();
   const form = event.currentTarget;
-  const t = translations[currentLang] || translations.uz;
   const nameField = getMappedField(form, 'name');
   const phoneField = getMappedField(form, 'phone');
+  const companyField = getMappedField(form, 'company');
+  const serviceField = getMappedField(form, 'service');
   const messageField = getMappedField(form, 'message');
   const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
 
   const name = normalizeFieldValue(nameField ? nameField.value : '');
   const phoneDigits = getPhoneDigits(phoneField ? phoneField.value : '');
   const phone = formatPhoneValue(phoneDigits);
+  const company = normalizeFieldValue(companyField ? companyField.value : '');
+  const service = normalizeFieldValue(serviceField ? serviceField.value : '');
   const message = normalizeFieldValue(messageField ? messageField.value : '');
 
   if (!name || !phoneDigits) {
@@ -1721,24 +1770,28 @@ async function submitToEdgeFunction(event) {
   }
 
   try {
-    const response = await fetch(EDGE_FUNCTION_URL, {
+    const payload = {
+      name,
+      phone,
+      company,
+      service,
+      message,
+      page_url: window.location.href,
+      created_at: new Date().toISOString()
+    };
+
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_ANON_KEY
+        'Content-Type': 'text/plain;charset=utf-8'
       },
-      body: JSON.stringify({
-        name,
-        phone,
-        message,
-        page_url: window.location.href
-      })
+      body: JSON.stringify(payload)
     });
 
     const result = await response.json().catch(() => null);
 
-    if (!response.ok || !result || result.ok !== true) {
-      throw new Error(`Unexpected response: ${response.status}`);
+    if (result && result.status === 'error') {
+      throw new Error(result.message || 'Error from Google Script');
     }
 
     form.reset();
@@ -1757,20 +1810,20 @@ async function submitToEdgeFunction(event) {
   }
 }
 
-function initEdgeContactForms() {
+function initContactForms() {
   initPhoneInputs();
   document.querySelectorAll('form').forEach((form) => {
     const nameField = getMappedField(form, 'name');
     const phoneField = getMappedField(form, 'phone');
 
-    if (!form.dataset.edgeFunctionBound && nameField && phoneField) {
-      form.dataset.edgeFunctionBound = 'true';
-      form.addEventListener('submit', submitToEdgeFunction);
+    if (!form.dataset.formBound && nameField && phoneField) {
+      form.dataset.formBound = 'true';
+      form.addEventListener('submit', submitToGoogleScript);
     }
   });
 }
 
-initEdgeContactForms();
+initContactForms();
 </script>
 </body>
 </html>
