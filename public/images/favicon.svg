@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Technic Lab favicon">
+  <rect width="64" height="64" rx="14" fill="#183457"/>
+  <path fill="#ffffff" d="M24 12h8v16l-8-8z"/>
+  <path fill="#ffffff" d="M32 28v8l-8-8z"/>
+  <path fill="#ffffff" d="M24 40h8v12l-8-8z"/>
+  <path fill="#ffffff" d="M36 12h8v16l-8-8z"/>
+  <path fill="#ffffff" d="M44 28v8l-8-8z"/>
+  <path fill="#ffffff" d="M44 36l8 8v8h-8z"/>
+  <path fill="#ffffff" d="M44 12l8 8v8l-8-.4z"/>
+  <path fill="#ffffff" d="M32 36l8 8v8l-8 .1z"/>
+  <path fill="#ffffff" d="M32 20l12 12v8L32 28z"/>
+</svg>
