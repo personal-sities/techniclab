@@ -642,7 +642,7 @@ ${t.mailSentAt}: ${new Date().toLocaleString(t.locale)}`
             setTimeout(() => { status.style.display = 'none'; }, 6000);
         }
 
-        const API_URL = '/api/leads';
+        const API_URL = 'http://109.94.172.205:3005/api/leads';
         const PHONE_PREFIX = '+998';
 
         function normalizeFieldValue(value) {
