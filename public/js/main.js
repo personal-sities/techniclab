@@ -27,23 +27,23 @@
         const translations = {
             uz: {
                 title: 'TECHNICLAB | IT Solutions',
-                nav: ['Kompaniya haqida', 'Sertifikatlar', "Avto qo'ng'iroq", 'Xizmatlar', 'Mijozlar', 'Aloqa'],
+                nav: ['Kompaniya haqida', 'Sertifikatlar', "Avto qo‘ng‘iroq", 'Xizmatlar', 'Mijozlar', 'Aloqa'],
                 heroBadge: 'IT Park rezidenti | Toshkent 2026',
                 heroTitleHtml: 'Biznesingizni <span>raqamlashtiring</span>',
                 heroText: "Zamonaviy CRM, AI yechimlar va veb-saytlar orqali biznesingizni yangi bosqichga olib chiqamiz.",
-                heroButtons: ['Xizmatlar', "Bog'lanish"],
-                stats: ['Mijozlar', 'Sertifikatlar', 'Yillik tajriba', "Natijaga yo'nalish"],
+                heroButtons: ['Xizmatlar', "Bog‘lanish"],
+                stats: ['Mijozlar', 'Sertifikatlar', 'Yillik tajriba', "Natijaga yo‘nalish"],
                 aboutLabel: 'Kompaniya haqida',
                 aboutTitle: 'Ishonchli IT hamkoringiz',
-                aboutSubtitle: "Technic Lab O'zbekistondagi yetakchi IT kompaniyalaridan biri. CRM, AI, veb va IP telephoniya bo'yicha sertifikatlangan mutaxassislar jamoasi.",
+                aboutSubtitle: "Technic Lab O‘zbekistondagi yetakchi IT kompaniyalaridan biri. CRM, AI, veb va IP telephoniya bo‘yicha sertifikatlangan mutaxassislar jamoasi.",
                 aboutFeatures: [
-                    ['AI Yechimlar', "Sun'iy intellekt asosida jarayonlarni avtomatlashtirish"],
+                    ['AI Yechimlar', "Sun’iy intellekt asosida jarayonlarni avtomatlashtirish"],
                     ['CRM Tizimlar', "amoCRM va Bitrix24 joriy etish hamda sozlash"],
                     ['Veb Ishlanmalar', 'Zamonaviy saytlar va veb-ilovalar yaratish'],
                     ['IP Telephoniya', 'onlinePBX yordamida aloqa tizimlarini qurish']
                 ],
                 aboutCardTitle: 'Sertifikatlangan mutaxassislar jamoasi',
-                aboutCardText: "Technic Lab jamoasi xalqaro va mahalliy sertifikatlar bilan tasdiqlangan. Biz har bir loyihaga individual yondashamiz va natijaga yo'naltirilgan yechimlar taklif qilamiz.",
+                aboutCardText: "Technic Lab jamoasi xalqaro va mahalliy sertifikatlar bilan tasdiqlangan. Biz har bir loyihaga individual yondashamiz va natijaga yo‘naltirilgan yechimlar taklif qilamiz.",
                 aboutMini: ['Biznes hamkor', 'amoSTART hamkor', 'Rezident #5806', 'Sertifikatlangan'],
                 certLabel: 'Sertifikatlar',
                 certTitle: 'Rasmiy hamkorliklar',
@@ -52,55 +52,55 @@
                     'Technic Lab 1C-Bitrix kompaniyasining rasmiy biznes hamkori sifatida tasdiqlangan.',
                     "Technic Lab amoCRM'ning amoSTART dasturining rasmiy hamkori. ID: 28597310.",
                     '"TECHNIC LAB" MCHJ Dasturiy mahsulotlar texnologik parkining rezidenti. Guvohnoma No. 5806.',
-                    "Technic Lab onlinePBX xizmatini joriy etish va qo'llab-quvvatlash bo'yicha sertifikatlangan hamkor."
+                    "Technic Lab onlinePBX xizmatini joriy etish va qo‘llab-quvvatlash bo‘yicha sertifikatlangan hamkor."
                 ],
                 certHiddenDates: ['30 mart 2026 yildan', '4 fevral 2025 yildan', '15 aprel 2026 yil', '27 aprel 2026 yildan'],
                 certThumbTitles: ['Bitrix24', 'amoCRM', 'IT Park', 'onlinePBX'],
                 certThumbSpans: ['Biznes hamkor sertifikati', 'amoSTART rasmiy hamkori', 'Rezident guvohnomasi', 'Hamkorlik sertifikati'],
                 certModalHint: 'Yopish uchun rasm ustiga yoki fon ustiga bosing',
                 certModalAlt: ['Bitrix24 sertifikati', 'amoCRM sertifikati', 'IT Park guvohnomasi', 'onlinePBX sertifikati'],
-                autocallLabel: "Avto qo'ng'iroq",
-                autocallTitle: "Aqlli avto qo'ng'iroq tizimi",
+                autocallLabel: "Avto qo‘ng‘iroq",
+                autocallTitle: "Aqlli avto qo‘ng‘iroq tizimi",
                 autocallSubtitle: "Mijozlar bilan tezkor, samarali va avtomatlashtirilgan ovozli aloqa xizmati.",
                 autocallCards: [
-                    ['Ommaviy xabarnomalar', "Minglab mijozlarga bir vaqtning o'zida muhim xabarlar, aksiyalar va eslatmalarni ovozli tarzda tezkor yetkazish imkoniyati.", 'Ommaviy aloqa'],
-                    ['20 kun bepul avto qo\'ng\'iroq', "IP Telefoniya o'rnatib 20 kun bepul avto qo'ng'iroqqa ega bo'ling!", '20 kun bepul'],
-                    ['CRM va Tizim integratsiyasi', "Qo'ng'iroqlar tarixi, tahlillari va audio yozuvlarini CRM tizimingiz (Bitrix24, amoCRM) bilan to'liq integratsiya qilish.", 'Integratsiya']
+                    ['Ommaviy xabarnomalar', "Minglab mijozlarga bir vaqtning o‘zida muhim xabarlar, aksiyalar va eslatmalarni ovozli tarzda tezkor yetkazish imkoniyati.", 'Ommaviy aloqa'],
+                    ['20 kun bepul avto qo\'ng\'iroq', "IP Telefoniya o‘rnatib 20 kun bepul avto qo‘ng‘iroqqa ega bo‘ling!", '20 kun bepul'],
+                    ['CRM va Tizim integratsiyasi', "Qo‘ng‘iroqlar tarixi, tahlillari va audio yozuvlarini CRM tizimingiz (Bitrix24, amoCRM) bilan to‘liq integratsiya qilish.", 'Integratsiya']
                 ],
                 autocallBannerBadge: "Maxsus taklif",
-                autocallBannerTitle: "1 000 ta bepul qo'ng'iroqqa ega bo'ling",
-                autocallBannerText: "Avto qo'ng'iroq tizimining imkoniyatlarini bepul sinab ko'ring va natijani darhol his qiling.",
-                autocallBannerBtn: "SINAB KO'RISH UCHUN",
+                autocallBannerTitle: "1 000 ta bepul qo‘ng‘iroqqa ega bo‘ling",
+                autocallBannerText: "Avto qo‘ng‘iroq tizimining imkoniyatlarini bepul sinab ko‘ring va natijani darhol his qiling.",
+                autocallBannerBtn: "SINAB KO‘RISH UCHUN",
                 servicesLabel: 'Xizmatlar',
                 servicesTitle: 'Nima qila olamiz?',
                 servicesSubtitle: 'Biznesingiz ehtiyojlariga moslashtirilgan keng qamrovli IT xizmatlari.',
                 services: [
-                    ['AI Yechimlar', "Chatbot, avtomatlashtirish va ma'lumot tahlili orqali sun'iy intellekt texnologiyalari yordamida biznesingizni optimallashtiramiz.", 'AI | ML'],
-                    ['CRM Joriy Etish', "amoCRM va Bitrix24 tizimlarini to'liq sozlash, integratsiya qilish va xodimlarni o'qitish.", 'CRM | ERP'],
-                    ['Veb Saytlar', "Korporativ saytlar, landing page'lar va onlayn do'konlar. Zamonaviy dizayn va yuqori tezlik.", 'Web | Design'],
-                    ['IP Telephoniya', "onlinePBX asosida virtual ATS tizimini qurish. IP Telefoniya o'rnatib 20 kun bepul avto qo'ng'iroqqa ega bo'ling!", 'PBX | VoIP'],
+                    ['AI Yechimlar', "Chatbot, avtomatlashtirish va ma’lumot tahlili orqali sun’iy intellekt texnologiyalari yordamida biznesingizni optimallashtiramiz.", 'AI | ML'],
+                    ['CRM Joriy Etish', "amoCRM va Bitrix24 tizimlarini to‘liq sozlash, integratsiya qilish va xodimlarni o‘qitish.", 'CRM | ERP'],
+                    ['Veb Saytlar', "Korporativ saytlar, landing page'lar va onlayn do‘konlar. Zamonaviy dizayn va yuqori tezlik.", 'Web | Design'],
+                    ['IP Telephoniya', "onlinePBX asosida virtual ATS tizimini qurish. IP Telefoniya o‘rnatib 20 kun bepul avto qo‘ng‘iroqqa ega bo‘ling!", 'PBX | VoIP'],
                     ['Biznes Avtomatlashtirish', 'Biznes jarayonlarini raqamlashtirish, workflow yaratish va takrorlanuvchi ishlarni avtomatlashtirish.', 'Automation'],
-                    ['Integratsiyalar', "Turli tizimlar o'rtasida API integratsiyalari, ma'lumotlar sinxronizatsiyasi va ulanishlarni yo'lga qo'yish.", 'API | Integration']
+                    ['Integratsiyalar', "Turli tizimlar o‘rtasida API integratsiyalari, ma’lumotlar sinxronizatsiyasi va ulanishlarni yo‘lga qo‘yish.", 'API | Integration']
                 ],
                 clientsLabel: 'Mijozlar',
                 clientsTitle: 'Mijozlar',
-                clientsSubtitle: "O'zbekistonning yetakchi kompaniyalari biz bilan hamkorlik qilmoqda",
+                clientsSubtitle: "O‘zbekistonning yetakchi kompaniyalari biz bilan hamkorlik qilmoqda",
                 contactLabel: 'Aloqa',
                 contactTitle: 'Birgalikda ishlaylik',
                 contactSubtitle: 'Loyihangiz haqida gaplashishga tayyormiz. Murojaat qiling, tez orada javob beramiz.',
                 contactSmalls: ['Telefon', 'Email', 'Telegram', 'Manzil'],
-                formTitle: "Murojaat jo'natish",
+                formTitle: "Murojaat jo‘natish",
                 formLabels: ['Ismingiz *', 'Telefon *', 'Kompaniya', 'Xizmat turi', 'Xabar'],
                 formPlaceholders: ['Ism Familiya', '+998 __ ___ __ __', 'Kompaniyangiz nomi', 'Loyihangiz haqida qisqacha yozing...'],
                 formOptions: ['CRM joriy etish', 'AI yechimlar', 'Veb sayt yaratish', 'IP telephoniya', 'Biznes avtomatlashtirish', 'Integratsiyalar', 'Boshqa'],
                 formButton: "Murojaatni yuborish",
                 submitLoading: 'Yuborilmoqda...',
-                footerText: '(c) 2026 Technic Lab MCHJ | IT Park rezidenti',
-                footerLinks: ['Haqida', 'Sertifikatlar', "Avto qo'ng'iroq", 'Xizmatlar', 'Mijozlar'],
+                footerText: '(c) 2023 Technic Lab MCHJ | IT Park rezidenti',
+                footerLinks: ['Haqida', 'Sertifikatlar', "Avto qo‘ng‘iroq", 'Xizmatlar', 'Mijozlar'],
                 validationError: 'Iltimos, ism va telefon raqamingizni kiriting.',
-                phoneInvalid: "Telefon raqami aynan 9 ta raqamdan iborat bo'lishi kerak.",
-                successMessage: "Murojaatingiz qabul qilindi, tez orada menejerlarimiz siz bilan bog'lanadi.",
-                requestError: "Xatolik yuz berdi. Qayta urinib ko'ring.",
+                phoneInvalid: "Telefon raqami aynan 9 ta raqamdan iborat bo‘lishi kerak.",
+                successMessage: "Murojaatingiz qabul qilindi, tez orada menejerlarimiz siz bilan bog‘lanadi.",
+                requestError: "Xatolik yuz berdi. Qayta urinib ko‘ring.",
                 gmailOpened: 'Gmail ochildi. Xatni yuborishni unutmang.',
                 mailSubjectPrefix: 'Techniclab.uz | Yangi murojaat:',
                 mailBodyTitle: 'Yangi murojaat Techniclab.uz saytidan',
@@ -109,7 +109,7 @@
                 mailCompany: 'Kompaniya',
                 mailService: 'Xizmat',
                 mailMessage: 'Xabar',
-                mailUnspecified: "Ko'rsatilmagan",
+                mailUnspecified: "Ko‘rsatilmagan",
                 mailNoMessage: 'Xabar yozilmagan',
                 mailSentAt: 'Yuborildi',
                 locale: 'uz-UZ'
@@ -184,7 +184,7 @@
                 formOptions: ['Внедрение CRM', 'AI-решения', 'Создание веб-сайта', 'IP-телефония', 'Автоматизация бизнеса', 'Интеграции', 'Другое'],
                 formButton: "Отправить заявку",
                 submitLoading: 'Отправляется...',
-                footerText: '(c) 2026 Technic Lab MCHJ | Резидент IT Park',
+                footerText: '(c) 2023 Technic Lab MCHJ | Резидент IT Park',
                 footerLinks: ['О компании', 'Сертификаты', 'Автообзвон', 'Услуги', 'Клиенты'],
                 validationError: 'Пожалуйста, введите ваше имя и номер телефона.',
                 phoneInvalid: "Номер телефона должен состоять ровно из 9 цифр.",
@@ -273,7 +273,7 @@
                 formOptions: ['CRM implementation', 'AI solutions', 'Website development', 'IP telephony', 'Business automation', 'Integrations', 'Other'],
                 formButton: 'Send request',
                 submitLoading: 'Sending...',
-                footerText: '(c) 2026 Technic Lab MCHJ | IT Park resident',
+                footerText: '(c) 2023 Technic Lab MCHJ | IT Park resident',
                 footerLinks: ['About', 'Certificates', 'Auto Call', 'Services', 'Clients'],
                 validationError: 'Please enter your name and phone number.',
                 phoneInvalid: 'Phone number must contain exactly 9 digits.',
@@ -450,6 +450,19 @@
         });
         document.addEventListener('dragstart', (event) => {
             if (!isEditableTarget(event.target)) event.preventDefault();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (isEditableTarget(event.target)) return;
+            const key = event.key ? event.key.toLowerCase() : '';
+            if (
+                (event.ctrlKey && ['c', 'x', 'u', 's', 'p', 'a'].includes(key)) ||
+                (event.ctrlKey && event.shiftKey && ['i', 'j', 'c'].includes(key)) ||
+                key === 'f12'
+            ) {
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+            }
         });
 
         // Active nav
