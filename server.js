@@ -140,7 +140,7 @@ async function createAmoCRMLead({ name, phone, company, service, message, pageUr
   // 3. Create task (zadacha) for responsible manager
   try {
     const completeTill = Math.floor(Date.now() / 1000) + 7200; // 2 hours from now
-    const taskText = `Mijoz bilan bog'lanish: ${name} (${phone}) - ${service || 'Yangi ariza'}`;
+    const taskText = `Mijoz bilan boğlaniş: ${name} (${phone}) - ${service || 'Yangi ariza'}`;
 
     const taskPayload = [
       {
@@ -188,7 +188,7 @@ async function handleContactSubmission(req, res) {
     if (!formattedPhone) {
       return res.status(400).json({
         ok: false,
-        error: "Telefon raqami 9 ta raqamdan iborat bo'lishi kerak (+998...)."
+        error: "Telefon raqami 9 ta raqamdan iborat bölişi kerak (+998...)."
       });
     }
 
@@ -205,7 +205,7 @@ async function handleContactSubmission(req, res) {
       ok: true,
       success: true,
       lead_id: leadId,
-      message: 'Murojaatingiz qabul qilindi. Tez orada menejerimiz bog‘lanadi.'
+      message: 'Murojaatingiz qabul qilindi. Tez orada menejerimiz boğlanadi.'
     });
   } catch (err) {
     console.error('Contact submission error:', err);
